@@ -1,0 +1,297 @@
+/* Base Styles */
+.homeContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: white;
+  background-color: #1f1f1f;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.heroLeft h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ac99ea, #e666cc, #53ceda);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 25px;
+}
+
+/* Search Bar */
+.heroSearchBar {
+  margin-bottom: 20px;
+}
+
+.inputWithButton {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+.formInput {
+  width: 100%;
+  padding: 12px 45px 12px 15px;
+  border: 1.5px solid #666;
+  border-radius: 6px;
+  background-color: #121212;
+  color: white;
+  outline: none;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+.formInput:focus {
+  border-color: #ac99ea;
+  background-color: #1f1f1f;
+}
+
+.inputWithButton label {
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  color: #888;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+.formInput:focus + label,
+.formInput:not(:placeholder-shown) + label {
+  top: -10px;
+  left: 10px;
+  font-size: 0.75rem;
+  color: #ac99ea;
+  background-color: #1f1f1f;
+  padding: 0 4px;
+}
+
+.searchBtn {
+  position: absolute;
+  top: 32%;
+  right: 2px;
+  transform: translateY(-50%);
+  height: calc(100% - 6px);
+  width: 39px;
+  border: none;
+  border-radius: 3px;
+  background-color: #ac99ea;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.searchBtn:hover {
+  background-color: #925fc4;
+}
+
+.searchBtn img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Category Chips */
+.heroCategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.categoryChip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: #2f2f2f;
+  border: 1px solid #666;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.categoryChip:hover {
+  background-color: #ac99ea;
+  color: #1f1f1f;
+  border-color: #ac99ea;
+}
+
+/* Hero Right (Lottie) */
+.heroRight {
+  width: 500px;
+  height: 500px;
+}
+
+/* Categorical Section */
+.categoricalTitle {
+  text-align: center;
+}
+
+.categoricalSection {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  margin-top: 40px;
+  justify-content: space-between;
+}
+
+.categoryCard {
+  flex: 0 0 25%;
+  background-color: #121212;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(172, 153, 234, 0.2);
+  border: 2px solid #9780e5;
+  transition: all 0.3s;
+}
+
+.categoryCard:hover {
+  box-shadow: 0 0 15px rgba(172, 153, 234, 0.4);
+  cursor: pointer;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.categoryCard h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Gradient Title Colors */
+.card1 h2 {
+  background-image: linear-gradient(45deg, #9780e5, #9780e5);
+}
+.card2 h2 {
+  background-image: linear-gradient(45deg, #e666cc, #e666cc);
+}
+.card3 h2 {
+  background-image: linear-gradient(45deg, #53ceda, #53ceda);
+}
+.card4 h2 {
+  background-image: linear-gradient(45deg, #9780e5, #9780e5);
+}
+
+/* Gradient Borders */
+.card2 {
+  border-color: #e666cc;
+}
+.card3 {
+  border-color: #53ceda;
+}
+.card4 {
+  border-color: #9780e5;
+}
+
+/* Icon Filters (match border color) */
+.card1 img {
+  filter: invert(56%) sepia(69%) saturate(502%) hue-rotate(223deg)
+    brightness(96%) contrast(92%);
+}
+.card2 img {
+  filter: invert(57%) sepia(63%) saturate(365%) hue-rotate(296deg)
+    brightness(96%) contrast(91%);
+}
+.card3 img {
+  filter: invert(50%) sepia(62%) saturate(353%) hue-rotate(151deg)
+    brightness(96%) contrast(91%);
+}
+.card4 img {
+  filter: invert(56%) sepia(69%) saturate(502%) hue-rotate(223deg)
+    brightness(96%) contrast(92%);
+}
+
+.categoryCard p {
+  color: #ccc;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .categoricalSection {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .categoryCard {
+    flex: 1 1 calc(50% - 12px);
+  }
+
+  .categoryCard h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Wh/* Why Us Section */
+.whyUs {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap; /* ensures it looks good on smaller screens */
+}
+
+.whyUs h1 {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Lottie Animation */
+.whyUsAnimation {
+  flex: 1 1 300px; /* width for animation */
+  max-width: 350px;
+  height: 250px; /* smaller height */
+}
+
+/* Paragraph on the right */
+.whyUsRightSide {
+  flex: 1 1 300px;
+  display: flex;
+  align-items: center;
+}
+
+.whyUsRightSide p {
+  color: #ccc;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .whyUs {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .whyUsRightSide {
+    text-align: center;
+  }
+
+  .whyUsAnimation {
+    max-width: 80%;
+    height: auto; /* keep aspect ratio */
+  }
+}
