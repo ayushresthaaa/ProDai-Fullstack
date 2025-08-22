@@ -41,8 +41,13 @@ export const Login = () => {
       localStorage.setItem("token", response.token);
       localStorage.setItem("username", JSON.stringify(response.user.username));
       localStorage.setItem("usertype", JSON.stringify(response.user.usertype));
+      localStorage.setItem("userId", response.user.id);
       setTimeout(() => {
-        navigate("/home");
+        if (response.user.usertype === "professional") {
+          navigate("/profile");
+        } else {
+          navigate("/home");
+        }
       }, 2000);
     } catch (err: unknown) {
       const error = err as { message: string };

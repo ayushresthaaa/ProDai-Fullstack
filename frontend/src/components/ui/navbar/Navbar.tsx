@@ -33,7 +33,15 @@ export const Navbar: React.FC = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navContainer}>
-        <div className={styles.logo}>Pro Dai.</div>
+        <div
+          className={styles.logo}
+          onClick={() => {
+            navigate("/home");
+          }}
+          style={{ cursor: "pointer" }}
+        >
+          Pro Dai.
+        </div>
 
         <div className={styles.rightSection}>
           <div className={styles.links}>
@@ -92,7 +100,7 @@ export const Navbar: React.FC = () => {
 
             {dropdownOpen && (
               <div className={styles.dropdown}>
-                <button onClick={() => navigate("/profile")}>Profile</button>
+                {/* <button onClick={() => navigate("/profile")}>Profile</button> */}
                 <button onClick={() => navigate("/configCredentials")}>
                   Profile Settings
                 </button>

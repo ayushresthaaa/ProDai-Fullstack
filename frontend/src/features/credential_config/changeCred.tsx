@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -7,6 +7,7 @@ import {
   updatePasswordAPI,
   switchToProfessionalAPI,
   switchToUserAPI,
+  getUserCredentials, // <-- import this
 } from "../../shared/config/api";
 import styles from "./changeCred.module.css";
 import {
@@ -18,68 +19,57 @@ import {
   updateEmailSchema,
   updatePasswordSchema,
   switchUserTypeSchema,
-} from "./changeCred.schema"; // adjust path if needed
+} from "./changeCred.schema";
 import { Navbar } from "../../components/ui/navbar/Navbar";
-
-// Helper button to prevent hover/glow/move
-const FixedButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
-  children,
-  ...props
-}) => (
-  <button
-    {...props}
-    style={{
-      boxShadow: "none",
-      outline: "none",
-      transform: "none",
-    }}
-  >
-    {children}
-  </button>
-);
+import { ProfessionalNavbar } from "../../components/ui/navbar/ProNavbar";
+import { Footer } from "../../components/ui/footer/Footer";
 
 export const ChangeCred = () => {
-  const [sucess, setSuccessMessage] = useState("");
+  const [success, setSuccessMessage] = useState("");
   const [error, setErrorMessage] = useState("");
+  const storedUsertype = localStorage.getItem("usertype");
+  const usertype = storedUsertype ? JSON.parse(storedUsertype) : "user";
 
-  const {
-    register: registerUsername,
-    handleSubmit: handleSubmitUsername,
-    formState: { errors: usernameErrors },
-  } = useForm<UpdateUsernameForm>({
+  // Forms
+  const usernameForm = useForm<UpdateUsernameForm>({
     resolver: yupResolver(updateUsernameSchema),
   });
-
-  const {
-    register: registerEmail,
-    handleSubmit: handleSubmitEmail,
-    formState: { errors: emailErrors },
-  } = useForm<UpdateEmailForm>({ resolver: yupResolver(updateEmailSchema) });
-
-  const {
-    register: registerPassword,
-    handleSubmit: handleSubmitPassword,
-    formState: { errors: passwordErrors },
-  } = useForm<UpdatePasswordForm>({
+  const emailForm = useForm<UpdateEmailForm>({
+    resolver: yupResolver(updateEmailSchema),
+  });
+  const passwordForm = useForm<UpdatePasswordForm>({
     resolver: yupResolver(updatePasswordSchema),
   });
-
-  const {
-    register: registerUsertype,
-    handleSubmit: handleSubmitUsertype,
-    formState: { errors: usertypeErrors },
-  } = useForm<SwitchUserTypeForm>({
+  const usertypeForm = useForm<SwitchUserTypeForm>({
     resolver: yupResolver(switchUserTypeSchema),
   });
+
+  // Fetch user credentials on mount and reset forms
+  useEffect(() => {
+    const fetchUserCredentials = async () => {
+      try {
+        const data = await getUserCredentials();
+        usernameForm.reset({ username: data.username });
+        emailForm.reset({ email: data.email });
+        usertypeForm.reset({ usertype: data.usertype });
+      } catch (err: unknown) {
+        const error = err as { message: string };
+        setErrorMessage(error.message || "Failed to fetch user data");
+      }
+    };
+    fetchUserCredentials();
+  }, []);
 
   // Handlers
   const onUpdateUsername = async (data: UpdateUsernameForm) => {
     try {
       const res = await updateUsernameAPI(data.username);
       setSuccessMessage(res.message);
+      setErrorMessage("");
     } catch (err: unknown) {
       const error = err as { message: string };
       setErrorMessage(error.message || "Failed to update username");
+      setSuccessMessage("");
     }
   };
 
@@ -100,6 +90,7 @@ export const ChangeCred = () => {
       const res = await updatePasswordAPI(data.oldPassword, data.newPassword);
       setSuccessMessage(res.message);
       setErrorMessage("");
+      passwordForm.reset(); // Clear password fields
     } catch (err: unknown) {
       const error = err as { message: string };
       setErrorMessage(error.message || "Failed to update password");
@@ -126,151 +117,162 @@ export const ChangeCred = () => {
 
   return (
     <>
-      <Navbar />
+      {usertype === "professional" ? <ProfessionalNavbar /> : <Navbar />}
       <div className={styles.container}>
         <h1 className={styles.title}>Manage Your Account</h1>
 
         {/* Username Form */}
         <form
-          onSubmit={handleSubmitUsername(onUpdateUsername)}
+          onSubmit={usernameForm.handleSubmit(onUpdateUsername)}
           className={styles.section}
         >
           <h2>Change Username</h2>
           <div className={styles.inputGroup}>
             <input
-              {...registerUsername("username")}
+              {...usernameForm.register("username")}
               type="text"
               placeholder=" "
+              autoComplete="off"
               className={styles.formInput}
             />
             <label className={styles.formLabel}>Username</label>
-            {usernameErrors.username && (
+            {usernameForm.formState.errors.username && (
               <p className={styles.errorMessage}>
-                {usernameErrors.username.message}
+                {usernameForm.formState.errors.username.message}
               </p>
             )}
           </div>
-          <FixedButton type="submit" className={styles.button}>
+          <button type="submit" className={styles.button}>
             Update Username
-          </FixedButton>
+          </button>
         </form>
 
         {/* Email Form */}
         <form
-          onSubmit={handleSubmitEmail(onUpdateEmail)}
+          onSubmit={emailForm.handleSubmit(onUpdateEmail)}
           className={styles.section}
         >
           <h2>Change Email</h2>
           <div className={styles.inputGroup}>
             <input
-              {...registerEmail("email")}
+              {...emailForm.register("email")}
               type="email"
               placeholder=" "
+              autoComplete="off"
               className={styles.formInput}
             />
             <label className={styles.formLabel}>Email</label>
-            {emailErrors.email && (
-              <p className={styles.errorMessage}>{emailErrors.email.message}</p>
+            {emailForm.formState.errors.email && (
+              <p className={styles.errorMessage}>
+                {emailForm.formState.errors.email.message}
+              </p>
             )}
           </div>
-          <FixedButton type="submit" className={styles.button}>
+          <button type="submit" className={styles.button}>
             Update Email
-          </FixedButton>
+          </button>
+        </form>
+
+        {/* Switch User Type */}
+        <form
+          onSubmit={usertypeForm.handleSubmit(onSwitchUsertype)}
+          className={`${styles.section} ${styles.switchSection}`}
+        >
+          <h2>Switch Account Type</h2>
+          <select
+            {...usertypeForm.register("usertype")}
+            className={styles.select}
+          >
+            <option value="user">User</option>
+            <option value="professional">Professional</option>
+          </select>
+          {usertypeForm.formState.errors.usertype && (
+            <p className={styles.errorMessage}>
+              {usertypeForm.formState.errors.usertype.message}
+            </p>
+          )}
+          <button type="submit" className={styles.button}>
+            Switch
+          </button>
         </form>
 
         {/* Password Form */}
         <form
-          onSubmit={handleSubmitPassword(onUpdatePassword)}
+          onSubmit={passwordForm.handleSubmit(onUpdatePassword)}
           className={styles.section}
         >
           <h2>Change Password</h2>
           <div className={styles.inputGroup}>
             <input
-              {...registerPassword("oldPassword")}
+              {...passwordForm.register("oldPassword")}
               type="password"
               placeholder=" "
               className={styles.formInput}
+              autoComplete="off"
             />
             <label className={styles.formLabel}>Old Password</label>
-            {passwordErrors.oldPassword && (
+            {passwordForm.formState.errors.oldPassword && (
               <p className={styles.errorMessage}>
-                {passwordErrors.oldPassword.message}
+                {passwordForm.formState.errors.oldPassword.message}
               </p>
             )}
           </div>
 
           <div className={styles.inputGroup}>
             <input
-              {...registerPassword("newPassword")}
+              {...passwordForm.register("newPassword")}
               type="password"
               placeholder=" "
               className={styles.formInput}
+              autoComplete="off"
             />
             <label className={styles.formLabel}>New Password</label>
-            {passwordErrors.newPassword && (
+            {passwordForm.formState.errors.newPassword && (
               <p className={styles.errorMessage}>
-                {passwordErrors.newPassword.message}
+                {passwordForm.formState.errors.newPassword.message}
               </p>
             )}
           </div>
 
           <div className={styles.inputGroup}>
             <input
-              {...registerPassword("confirmNewPassword")}
+              {...passwordForm.register("confirmNewPassword")}
               type="password"
               placeholder=" "
               className={styles.formInput}
+              autoComplete="off"
             />
             <label className={styles.formLabel}>Confirm New Password</label>
-            {passwordErrors.confirmNewPassword && (
+            {passwordForm.formState.errors.confirmNewPassword && (
               <p className={styles.errorMessage}>
-                {passwordErrors.confirmNewPassword.message}
+                {passwordForm.formState.errors.confirmNewPassword.message}
               </p>
             )}
           </div>
 
-          <FixedButton type="submit" className={styles.button}>
+          <button type="submit" className={styles.button}>
             Update Password
-          </FixedButton>
-        </form>
-
-        {/* Switch User Type */}
-        <form
-          onSubmit={handleSubmitUsertype(onSwitchUsertype)}
-          className={styles.section}
-        >
-          <h2>Switch Account Type</h2>
-          <select {...registerUsertype("usertype")} className={styles.select}>
-            <option value="user">User</option>
-            <option value="professional">Professional</option>
-          </select>
-          {usertypeErrors.usertype && (
-            <p className={styles.errorMessage}>
-              {usertypeErrors.usertype.message}
-            </p>
-          )}
-          <FixedButton type="submit" className={styles.button}>
-            Switch
-          </FixedButton>
+          </button>
         </form>
 
         {/* Modal */}
-        {(sucess || error) && (
+        {(success || error) && (
           <div className="modal-backdrop">
             <div className="modal">
-              <p>{sucess || error}</p>
-              <FixedButton
+              <p>{success || error}</p>
+              <button
                 onClick={() => {
                   setSuccessMessage("");
                   setErrorMessage("");
                 }}
               >
                 Close
-              </FixedButton>
+              </button>
             </div>
           </div>
         )}
       </div>
+      <Footer />
     </>
   );
 };

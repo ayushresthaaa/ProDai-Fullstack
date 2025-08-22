@@ -15,7 +15,16 @@ export const Footer = () => {
         </div>
         <div className={styles.footerColumn}>
           <h3>Follow</h3>
-          <p>Facebook / LinkedIn / GitHub</p>
+          <p>
+            <a
+              href="https://www.linkedin.com/in/aayush-shrestha-22936a278/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.footerLink} // optional, for styling
+            >
+              LinkedIn
+            </a>
+          </p>
         </div>
       </div>
       <p className={styles.footerBottom}>

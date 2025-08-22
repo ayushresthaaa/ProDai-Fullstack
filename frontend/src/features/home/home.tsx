@@ -36,6 +36,10 @@ export const Home = () => {
     if (!query.trim()) return;
     navigate(`/explore?query=${encodeURIComponent(query)}`);
   };
+  const handleClick = (category: string) => {
+    if (!category.trim()) return;
+    navigate(`/explore?query=${encodeURIComponent(category)}`);
+  };
 
   return (
     <>
@@ -74,10 +78,38 @@ export const Home = () => {
 
             {/* Category Chips */}
             <div className={styles.heroCategories}>
-              <span className={styles.categoryChip}>Web Development</span>
-              <span className={styles.categoryChip}>Mobile Apps</span>
-              <span className={styles.categoryChip}>AI/ML</span>
-              <span className={styles.categoryChip}>UI/UX Design</span>
+              <span
+                className={styles.categoryChip}
+                onClick={() => {
+                  handleClick("Web development");
+                }}
+              >
+                Web Development
+              </span>
+              <span
+                className={styles.categoryChip}
+                onClick={() => {
+                  handleClick("Mobile Apps");
+                }}
+              >
+                Mobile Apps
+              </span>
+              <span
+                className={styles.categoryChip}
+                onClick={() => {
+                  handleClick("AI/ML");
+                }}
+              >
+                AI/ML
+              </span>
+              <span
+                className={styles.categoryChip}
+                onClick={() => {
+                  handleClick("UI/UX");
+                }}
+              >
+                UI/UX Design
+              </span>
             </div>
           </div>
 
@@ -94,7 +126,12 @@ export const Home = () => {
           Check Out Popular Hires.
         </h1>
         <div className={styles.categoricalSection}>
-          <div className={`${styles.categoryCard} ${styles.card1}`}>
+          <div
+            className={`${styles.categoryCard} ${styles.card1}`}
+            onClick={() => {
+              handleClick("Web Development");
+            }}
+          >
             <div className={styles.cardHeader}>
               <img src="/src/assets/computer.png" />
               <h2>Web Developers</h2>
@@ -102,7 +139,12 @@ export const Home = () => {
             <p>Create responsive websites and web apps.</p>
           </div>
 
-          <div className={`${styles.categoryCard} ${styles.card2}`}>
+          <div
+            className={`${styles.categoryCard} ${styles.card2}`}
+            onClick={() => {
+              handleClick("Mobile Developers");
+            }}
+          >
             <div className={styles.cardHeader}>
               <img src="/src/assets/mobile.png" />
               <h2>Mobile Developers</h2>
@@ -110,7 +152,12 @@ export const Home = () => {
             <p>Build cross-platform mobile applications.</p>
           </div>
 
-          <div className={`${styles.categoryCard} ${styles.card3}`}>
+          <div
+            className={`${styles.categoryCard} ${styles.card3}`}
+            onClick={() => {
+              handleClick("AI/ML");
+            }}
+          >
             <div className={styles.cardHeader}>
               <img src="/src/assets/robot.png" />
               <h2>AI/ML Engineers</h2>

@@ -81,8 +81,8 @@
   position: absolute;
   top: 32%;
   right: 2px;
-  transform: translateY(-50%);
-  height: calc(100% - 6px);
+  transform: translateY(-56%);
+  height: calc(100% - 5px);
   width: 39px;
   border: none;
   border-radius: 3px;

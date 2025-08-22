@@ -3,13 +3,9 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { getProfile, createOrUpdateProfile } from "../../../shared/config/api";
 import "./profileForm.css";
 import { ProfessionalNavbar } from "../../../components/ui/navbar/ProNavbar";
+import { useNavigate } from "react-router-dom";
 
-type Qualification = {
-  title: string;
-  institute?: string;
-  year?: string;
-};
-
+type Qualification = { title: string; institute?: string; year?: string };
 type Experience = {
   title: string;
   company?: string;
@@ -17,13 +13,7 @@ type Experience = {
   endYear?: string;
   description?: string;
 };
-
-type Contact = {
-  email?: string;
-  github?: string;
-  linkedin?: string;
-};
-
+type Contact = { email?: string; github?: string; linkedin?: string };
 type ProfileFormData = {
   avatar?: string;
   location?: string;
@@ -39,6 +29,9 @@ export const ProfileForm = () => {
   const [profile, setProfile] = useState<ProfileFormData | null>(null);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -60,21 +53,14 @@ export const ProfileForm = () => {
     fields: qualFields,
     append: appendQual,
     remove: removeQual,
-  } = useFieldArray({
-    control,
-    name: "qualifications",
-  });
+  } = useFieldArray({ control, name: "qualifications" });
 
   const {
     fields: expFields,
     append: appendExp,
     remove: removeExp,
-  } = useFieldArray({
-    control,
-    name: "experience",
-  });
+  } = useFieldArray({ control, name: "experience" });
 
-  // Fetch existing profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -101,21 +87,19 @@ export const ProfileForm = () => {
     fetchProfile();
   }, [reset]);
 
-  // Handle avatar file selection
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setAvatarFile(e.target.files[0]);
     }
   };
 
-  // Upload avatar to Cloudinary
   const uploadAvatar = async (): Promise<string | undefined> => {
     if (!avatarFile) return profile?.avatar;
 
     setUploading(true);
     const formData = new FormData();
     formData.append("file", avatarFile);
-    formData.append("upload_preset", "profile_upload"); // your unsigned preset
+    formData.append("upload_preset", "profile_upload");
 
     try {
       const res = await fetch(
@@ -123,7 +107,6 @@ export const ProfileForm = () => {
         { method: "POST", body: formData }
       );
       const data = await res.json();
-      console.log("Cloudinary upload response:", data);
       return data.secure_url;
     } catch (err) {
       console.error("Upload failed:", err);
@@ -138,7 +121,6 @@ export const ProfileForm = () => {
       const avatarUrl = await uploadAvatar();
       const payload: ProfileFormData = { ...data, avatar: avatarUrl };
 
-      // Remove empty optional fields
       if (!payload.skills?.length) delete payload.skills;
       if (!payload.availability?.length) delete payload.availability;
       if (payload.contact && Object.keys(payload.contact).length === 0)
@@ -147,12 +129,11 @@ export const ProfileForm = () => {
         delete payload.qualifications;
       if (payload.experience?.every((e) => !e.title)) delete payload.experience;
 
-      const response = await createOrUpdateProfile(payload);
-      alert("Profile saved successfully!");
-      console.log("Profile update response:", response);
+      await createOrUpdateProfile(payload);
+      setSuccessMessage("Profile saved successfully!");
     } catch (err) {
       console.error("Error saving profile:", err);
-      alert("Failed to save profile. Check console.");
+      setErrorMessage("Failed to save profile. Check console.");
     }
   };
 
@@ -161,20 +142,28 @@ export const ProfileForm = () => {
       <ProfessionalNavbar />
       <div className="profile-form-container">
         <form onSubmit={handleSubmit(onSubmit)} className="profile-form">
-          <h2>Edit Profile</h2>
+          <h2>Let us know atleast something about You</h2>
 
           {/* Avatar Upload */}
           <div className="form-group">
             <label>Avatar</label>
-            <input type="file" onChange={handleAvatarChange} />
-            {uploading && <p>Uploading...</p>}
-            {profile?.avatar && !avatarFile && (
+            <div className="avatar-upload-container">
               <img
-                src={profile.avatar}
-                alt="Avatar"
+                src={
+                  avatarFile
+                    ? URL.createObjectURL(avatarFile)
+                    : profile?.avatar || ""
+                }
+                alt="Avatar Preview"
                 className="avatar-preview"
               />
-            )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+            </div>
+            {uploading && <p>Uploading...</p>}
           </div>
 
           {/* Location */}
@@ -264,20 +253,15 @@ export const ProfileForm = () => {
             <div key={field.id} className="field-group">
               <input
                 {...register(`qualifications.${index}.title`)}
-                placeholder={
-                  profile?.qualifications?.[index]?.title ||
-                  "Degree / Certificate"
-                }
+                placeholder="Degree / Certificate"
               />
               <input
                 {...register(`qualifications.${index}.institute`)}
-                placeholder={
-                  profile?.qualifications?.[index]?.institute || "Institute"
-                }
+                placeholder="Institute"
               />
               <input
                 {...register(`qualifications.${index}.year`)}
-                placeholder={profile?.qualifications?.[index]?.year || "Year"}
+                placeholder="Year"
               />
               <button type="button" onClick={() => removeQual(index)}>
                 Remove
@@ -294,29 +278,23 @@ export const ProfileForm = () => {
             <div key={field.id} className="field-group">
               <input
                 {...register(`experience.${index}.title`)}
-                placeholder={profile?.experience?.[index]?.title || "Job Title"}
+                placeholder="Job Title"
               />
               <input
                 {...register(`experience.${index}.company`)}
-                placeholder={profile?.experience?.[index]?.company || "Company"}
+                placeholder="Company"
               />
               <input
                 {...register(`experience.${index}.startYear`)}
-                placeholder={
-                  profile?.experience?.[index]?.startYear || "Start Year"
-                }
+                placeholder="Start Year"
               />
               <input
                 {...register(`experience.${index}.endYear`)}
-                placeholder={
-                  profile?.experience?.[index]?.endYear || "End Year"
-                }
+                placeholder="End Year"
               />
               <textarea
                 {...register(`experience.${index}.description`)}
-                placeholder={
-                  profile?.experience?.[index]?.description || "Description"
-                }
+                placeholder="Description"
               />
               <button type="button" onClick={() => removeExp(index)}>
                 Remove
@@ -330,9 +308,33 @@ export const ProfileForm = () => {
           {/* Submit */}
           <div className="form-actions">
             <button type="submit">Save Profile</button>
+            <button
+              type="button"
+              className="back-btn"
+              onClick={() => navigate("/profile")}
+            >
+              ← Back
+            </button>
           </div>
         </form>
       </div>
+
+      {/* Modal */}
+      {(successMessage || errorMessage) && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <p>{successMessage || errorMessage}</p>
+            <button
+              onClick={() => {
+                setSuccessMessage(null);
+                setErrorMessage(null);
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

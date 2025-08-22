@@ -8,6 +8,21 @@
   background-color: #1f1f1f;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+}
+
+/* Back Button */
+.back-btn {
+  color: #ac99ea;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  display: inline-block;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #53ceda;
 }
 
 /* Main Flex Layout */
@@ -80,29 +95,13 @@
   color: #ccc;
 }
 
-/* Edit Button */
-.edit-btn {
-  background-color: #ac99ea;
-  border: none;
-  border-radius: 6px;
-  padding: 10px 20px;
-  color: #1f1f1f;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-bottom: 15px; /* space between button and weekly calendar */
-}
-
-.edit-btn:hover {
-  background-color: #925fc4;
-}
-
 /* Weekly Availability Card */
 .accessibility-section {
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px; /* spacing between title, calendar, etc. */
+  gap: 15px;
   border-radius: 10px;
   background-color: #121212;
   border: 2px solid #9780e5;

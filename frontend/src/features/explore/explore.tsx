@@ -9,6 +9,7 @@ import {
 import { Navbar } from "../../components/ui/navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import { Footer } from "../../components/ui/footer/Footer";
+import { useNavigate } from "react-router-dom";
 interface Profile {
   _id: string;
   avatar?: string;
@@ -21,6 +22,7 @@ interface Profile {
     linkedin?: string;
   };
   userId: {
+    _id: string;
     username: string;
     fullname?: string;
   };
@@ -28,7 +30,7 @@ interface Profile {
 
 export const Explore = () => {
   //to get the query from the home page
-
+  const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const initialQuery = params.get("query") || "";
@@ -453,7 +455,14 @@ export const Explore = () => {
                     )} */}
                   </div>
 
-                  <button className={styles.viewProfile}>View Profile</button>
+                  <button
+                    className={styles.viewProfile}
+                    onClick={() =>
+                      navigate(`/getprofile/${profile.userId._id}`)
+                    }
+                  >
+                    View Profile
+                  </button>
                 </div>
               </div>
             ))}

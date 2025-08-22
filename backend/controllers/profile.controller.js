@@ -41,3 +41,20 @@ export const createOrUpdateProfile = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getProfileById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const profile = await Profile.findOne({ userId }).populate(
+      "userId",
+      "username fullname email usertype"
+    );
+
+    if (!profile) return res.status(404).json({ message: "Profile not found" });
+
+    res.json(profile);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

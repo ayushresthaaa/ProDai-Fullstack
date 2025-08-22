@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { getProfile } from "../../shared/config/api";
-import "./profile.css";
-import { ProfessionalNavbar } from "../../components/ui/navbar/ProNavbar";
-import { Footer } from "../../components/ui/footer/Footer";
+import { useParams } from "react-router-dom";
+import { getProfileById } from "../../../shared/config/api";
+import "./viewProfile.css";
+import { Navbar } from "../../../components/ui/navbar/Navbar";
+import { Footer } from "../../../components/ui/footer/Footer";
+
 type Contact = {
   email?: string;
   github?: string;
@@ -45,14 +47,16 @@ type ProfileData = {
 
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export const Profile = () => {
+export const ViewProfile = () => {
+  const { userId } = useParams<{ userId: string }>();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!userId) return;
       try {
-        const data = await getProfile();
+        const data = await getProfileById(userId);
         setProfile(data);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -61,17 +65,17 @@ export const Profile = () => {
       }
     };
     fetchProfile();
-  }, []);
+  }, [userId]);
 
   if (loading) return <div>Loading...</div>;
-  if (!profile) return <div>No profile found</div>;
+  if (!profile) return <div>Profile not found</div>;
 
   return (
     <>
-      <ProfessionalNavbar />
+      <Navbar />
       <div className="profile-container">
         <div className="profile-main">
-          {/* Left Column */}
+          {/* Left Container */}
           <div className="profile-left">
             <div className="profile-card">
               <div className="profile-header">
@@ -86,13 +90,6 @@ export const Profile = () => {
                 {profile.location && (
                   <h2 className="profile-address">{profile.location}</h2>
                 )}
-                {/* ✏️ Edit Profile Button */}
-                <button
-                  className="edit-btn"
-                  onClick={() => (window.location.href = "/profileEdit")}
-                >
-                  Edit Profile
-                </button>
               </div>
 
               {/* Weekly Availability */}
@@ -132,7 +129,7 @@ export const Profile = () => {
             </div>
           </div>
 
-          {/* Right Column */}
+          {/* Right Container */}
           <div className="profile-right">
             {/* Experience */}
             {profile.experience?.length > 0 && (
@@ -167,12 +164,12 @@ export const Profile = () => {
               </div>
             )}
 
-            {/* Contact Info below Qualifications */}
+            {/* Contact Info (moved below Qualifications) */}
             <div className="profile-card contact-section">
               <h2>Contact</h2>
               {profile.contact?.email && (
                 <div className="contact-item">
-                  <span className="contact-icon"></span>
+                  <span className="contact-icon">-</span>
                   <span className="contact-text">{profile.contact.email}</span>
                 </div>
               )}
@@ -184,7 +181,7 @@ export const Profile = () => {
               )}
               {profile.contact?.linkedin && (
                 <div className="contact-item">
-                  <span className="contact-icon">-</span>
+                  <span className="contact-icon"></span>
                   <span className="contact-text">
                     {profile.contact.linkedin}
                   </span>

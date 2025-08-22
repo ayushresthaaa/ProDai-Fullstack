@@ -1,0 +1,22 @@
+* Modal message */ .modal p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ac99ea;
+}
+
+/* Modal close button */
+.modal button {
+  padding: 10px 20px;
+  background-color: #ac99ea;
+  color: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.modal button:hover {
+  background-color: #925fc4;
+}

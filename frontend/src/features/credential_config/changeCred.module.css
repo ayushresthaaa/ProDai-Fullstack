@@ -112,12 +112,14 @@
   background-color: #2f2f2f;
 }
 
-/* Buttons */
+/* Buttons */ /* Buttons */
 button,
 .button {
-  width: 100%;
+  width: 200px; /* shorter width */
+  max-width: 80%; /* responsive for small screens */
   padding: 12px;
-  margin-top: 5px;
+  margin: 10px auto 0 auto; /* center horizontally with auto margins */
+  display: block; /* needed to apply horizontal auto margin */
   background-color: #ac99ea;
   color: #1f1f1f;
   border: none;
@@ -211,4 +213,18 @@ button:hover,
   .section {
     flex: 0 0 100%;
   }
+}
+/* Switch Account Type section */
+.switchSection {
+  flex: 0 0 45%;
+  background-color: #121212;
+  border-radius: 8px;
+  padding: 30px 40px;
+  border: 2px solid #ac99ea;
+  box-sizing: border-box;
+  min-width: 300px;
+  height: 300px; /* match height of other sections */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* center content vertically */
 }

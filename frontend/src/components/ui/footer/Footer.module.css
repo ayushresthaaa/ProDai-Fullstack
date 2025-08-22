@@ -32,3 +32,15 @@
   font-size: 0.8rem;
   color: #888;
 }
+
+.footerColumn a {
+  font-size: 0.9rem;
+  margin: 4px 0;
+  color: #ccc; /* same as other <p> */
+  text-decoration: none; /* remove underline */
+  cursor: pointer;
+}
+
+.footerColumn a:hover {
+  color: #ac99ea; /* optional: hover color to match headers */
+}

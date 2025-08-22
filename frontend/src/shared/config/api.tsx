@@ -33,8 +33,10 @@ api.interceptors.response.use(
 
       if (message === "User session Expired" || message === "Access denied") {
         localStorage.removeItem("token");
+        localStorage.removeItem("username");
+        localStorage.removeItem("usertype");
         sessionStorage.removeItem("token");
-        window.location.href = "/login"; // or "/" if your login is root
+        window.location.href = "/"; // or "/" if your login is root
       }
     }
     return Promise.reject(error);
@@ -93,6 +95,16 @@ export const getProfile = async () => {
     } else {
       throw { message: "Network error" };
     }
+  }
+};
+
+export const getProfileById = async (userId: string) => {
+  try {
+    const response = await api.get(`/profile/${userId}`);
+    return response.data;
+  } catch (err: unknown) {
+    const error = err as AxiosError<{ message: string }>;
+    throw error.response?.data || { message: "Network error" };
   }
 };
 
@@ -247,4 +259,30 @@ export const switchToUserAPI = async () => {
   }
 };
 
+// AI Recommendations
+export const getAIRecommendationsAPI = async (userId: string) => {
+  try {
+    const response = await api.get(`/ai-recommendation/${userId}`);
+    return response.data;
+  } catch (err: unknown) {
+    const error = err as AxiosError<{ message: string }>;
+    if (error.response && error.response.data) throw error.response.data;
+    throw { message: "Network error" };
+  }
+};
+export interface UserCredentials {
+  username: string;
+  fullname: string;
+  email: string;
+  usertype: "user" | "professional";
+}
+export const getUserCredentials = async (): Promise<UserCredentials> => {
+  try {
+    const res = await api.get("/profile/creds");
+    return res.data;
+  } catch (err: unknown) {
+    const error = err as AxiosError<{ message: string }>;
+    throw error.response?.data || { message: "Network error" };
+  }
+};
 export default api;

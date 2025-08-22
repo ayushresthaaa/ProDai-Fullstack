@@ -85,7 +85,7 @@ export const getTopProfiles = async (req, res) => {
         select: "username fullname email",
       })
       .sort({ createdAt: -1 }) // newest first, you can change to any criteria
-      .limit(6);
+      .limit(8);
 
     const filteredProfiles = profiles.filter(
       (p) => p.userId && p.userId._id.toString() !== userId

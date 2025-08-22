@@ -1,0 +1,94 @@
+.navbar {
+  background-color: #1f1f1f;
+  color: white;
+  padding: 8px 0;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo {
+  font-weight: 700;
+  color: #ac99ea;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.links {
+  display: flex;
+  gap: 12px;
+}
+
+.links a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.links a:hover {
+  color: #53ceda;
+}
+
+.iconPlaceholder {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 40px;
+  position: relative; /* needed for dropdown positioning */
+  cursor: pointer;
+}
+
+.username {
+  font-size: 0.9rem;
+  color: #ccc;
+  text-transform: lowercase;
+}
+
+.activeLink {
+  color: #53ceda;
+  text-shadow: 0 0 8px #53ceda;
+}
+/* Dropdown styles */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  min-width: 140px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dropdown > button {
+  all: unset; /* reset all inherited styles */
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  color: #ccc;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dropdown > button:hover {
+  background-color: #53ceda;
+  color: #1f1f1f;
+}
