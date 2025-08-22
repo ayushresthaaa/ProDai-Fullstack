@@ -142,7 +142,7 @@ export const ProfileForm = () => {
       <ProfessionalNavbar />
       <div className="profile-form-container">
         <form onSubmit={handleSubmit(onSubmit)} className="profile-form">
-          <h2>Let us know atleast something about You</h2>
+          <h2>Edit your Profile</h2>
 
           {/* Avatar Upload */}
           <div className="form-group">

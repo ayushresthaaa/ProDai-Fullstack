@@ -69,7 +69,7 @@
 .profile-name {
   font-size: 2rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #ac99ea, #e666cc, #53ceda);
+  background: #ac99ea;
   -webkit-background-clip: text;
   color: transparent;
   margin: 0;
@@ -181,17 +181,27 @@
 }
 
 /* Contact Section */
+.contact-section {
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
 .contact-section h2 {
   text-align: center;
   margin-bottom: 12px;
 }
 
 .contact-item {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
+  align-self: flex-start !important;
   gap: 8px;
   padding: 5px 0;
-  justify-content: center;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  width: fit-content !important;
 }
 
 .contact-icon {
@@ -201,19 +211,20 @@
 
 .contact-text {
   color: #ccc;
+  text-align: left !important;
 }
 
 /* Experience & Qualifications */
 .experience-section h2,
 .qualifications-section h2 {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 }
 
 .exp-item,
 .edu-item {
-  margin-bottom: 12px;
-  padding: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
   border-radius: 8px;
   background-color: #1f1f1f;
   border: 1px solid #666;
@@ -227,23 +238,27 @@
 }
 
 .item-title {
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1.2rem;
   background: linear-gradient(135deg, #ac99ea, #e666cc, #53ceda);
   -webkit-background-clip: text;
   color: transparent;
-  margin: 0;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
 }
 
 .item-subtitle {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #ccc;
-  margin: 2px 0;
+  margin: 4px 0 8px 0;
+  font-weight: 500;
 }
 
 .item-description {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: #ccc;
+  line-height: 1.4;
+  margin-top: 8px;
 }
 
 /* Responsive */

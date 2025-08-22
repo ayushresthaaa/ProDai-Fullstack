@@ -90,6 +90,12 @@ export const ViewProfile = () => {
                 {profile.location && (
                   <h2 className="profile-address">{profile.location}</h2>
                 )}
+                {profile.bio && (
+                  <div className="bio-section">
+                    {/* <h3>Bio</h3> */}
+                    <p className="bio-content">{profile.bio}</p>
+                  </div>
+                )}
               </div>
 
               {/* Weekly Availability */}
@@ -120,12 +126,6 @@ export const ViewProfile = () => {
               </div>
 
               {/* Bio */}
-              {profile.bio && (
-                <div className="bio-section">
-                  <h3>Bio</h3>
-                  <p className="bio-content">{profile.bio}</p>
-                </div>
-              )}
             </div>
           </div>
 
@@ -150,7 +150,7 @@ export const ViewProfile = () => {
             {/* Qualifications */}
             {profile.qualifications?.length > 0 && (
               <div className="profile-card qualifications-section">
-                <h2>Qualifications</h2>
+                <h2>Education</h2>
                 {profile.qualifications.map((qual, idx) => (
                   <div key={idx} className="edu-item">
                     <h3 className="item-title">{qual.title}</h3>

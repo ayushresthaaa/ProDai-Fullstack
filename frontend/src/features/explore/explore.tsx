@@ -421,7 +421,7 @@ export const Explore = () => {
                       <span className={styles.Avail}>
                         <img src="/src/assets/calendar.png"></img>
                         <p>
-                          Available{" "}
+                          {" "}
                           {profile.availability.filter(Boolean).length} days a
                           week
                         </p>
