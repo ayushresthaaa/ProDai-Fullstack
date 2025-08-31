@@ -80,7 +80,7 @@
 .searchBtn {
   position: absolute;
   top: 43%;
-  right: 2.6px;
+  right: 2.4px;
   transform: translateY(-56%);
   height: calc(100% - 5px);
   width: 39px;
