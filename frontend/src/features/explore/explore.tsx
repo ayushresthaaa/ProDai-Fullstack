@@ -325,8 +325,43 @@ export const Explore = () => {
                   className={styles.dropdownButton}
                   onClick={() => setDropDownOpen(!dropdownOpen)}
                 >
-                  {selectedCat || "Select Category"}
+                  <span className={styles.selectedText}>
+                    {selectedCat || "Select Category"}
+                  </span>
+
+                  {/* Clear button shows only when a category is selected */}
+                  {/* Clear button shows only when a category is selected */}
+                  {selectedCat && (
+                    <span
+                      className={styles.clearBtn}
+                      onClick={async (e) => {
+                        e.stopPropagation(); // prevent dropdown toggle
+                        setSelectCat("");
+                        setQuery("");
+                        setSelectedAvail(null);
+                        setSearchPerformed(false);
+                        // fetch top profiles again
+                        try {
+                          const data = await getTopProfiles();
+                          setResults(data);
+                          setNoResults(data.length === 0);
+                        } catch (err) {
+                          const error = err as { message: string };
+                          setErrormessage(error.message);
+                          setResults([]);
+                          setNoResults(true);
+                        }
+                      }}
+                    >
+                      <img
+                        src="/src/assets/clear.png"
+                        alt="clear"
+                        className={styles.clearIcon}
+                      />
+                    </span>
+                  )}
                 </button>
+
                 {dropdownOpen && (
                   <ul className={styles.dropdownMenu}>
                     {dropDownCategories.map((cat) => (
@@ -350,7 +385,39 @@ export const Explore = () => {
                   {selectedAvail
                     ? `≤ ${selectedAvail} days`
                     : "Select Availability"}{" "}
+                  {/* Clear button shows only when an availability is selected */}
+                  {selectedAvail && (
+                    <span
+                      className={styles.clearBtn}
+                      onClick={async (e) => {
+                        e.stopPropagation(); // prevent dropdown toggle
+                        setSelectedAvail(null);
+                        setQuery("");
+                        setSelectCat("");
+                        setSearchPerformed(false);
+                        // fetch top profiles again
+                        try {
+                          const data = await getTopProfiles();
+                          setResults(data);
+                          setNoResults(data.length === 0);
+                        } catch (err) {
+                          const error = err as { message: string };
+                          setErrormessage(error.message);
+                          setResults([]);
+                          setNoResults(true);
+                        }
+                        // Add this line
+                      }}
+                    >
+                      <img
+                        src="/src/assets/clear.png"
+                        alt="clear"
+                        className={styles.clearIcon}
+                      />
+                    </span>
+                  )}
                 </button>
+
                 {dropdownAvailOpen && (
                   <ul className={styles.dropdownMenu}>
                     {availabilityOptions.map((opt) => (
@@ -478,7 +545,17 @@ export const Explore = () => {
                     {profile.location && (
                       <span className={styles.address}>
                         <img src="/src/assets/location.png"></img>
-                        <p>{profile.location}</p>
+                        <div>
+                          {profile.location.length > 15 ? (
+                            profile.location
+                              .split(", ")
+                              .map((part, idx) => (
+                                <p key={idx}>{part.trim()}</p>
+                              ))
+                          ) : (
+                            <p>{profile.location}</p>
+                          )}
+                        </div>
                       </span>
                     )}
                     {profile.availability && (

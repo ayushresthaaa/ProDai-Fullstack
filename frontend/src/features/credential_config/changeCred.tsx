@@ -92,6 +92,10 @@ export const ChangeCred = () => {
       setSuccessMessage(res.message);
       setErrorMessage("");
       passwordForm.reset(); // Clear password fields
+
+      localStorage.removeItem("token"); // or your auth key
+      localStorage.removeItem("usertype"); // optional
+      navigate("/login"); // redirect to login page
     } catch (err: unknown) {
       const error = err as { message: string };
       setErrorMessage(error.message || "Failed to update password");
@@ -109,6 +113,11 @@ export const ChangeCred = () => {
         setSuccessMessage(res.message);
       }
       setErrorMessage("");
+
+      localStorage.removeItem("token"); // or your auth key
+      localStorage.removeItem("usertype"); // optional
+      localStorage.removeItem("username");
+      navigate("/login"); // redirect to login page
     } catch (err: unknown) {
       const error = err as { message: string };
       setErrorMessage(error.message || "Failed to switch account type");

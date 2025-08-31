@@ -44,7 +44,7 @@ type ProfileData = {
   experience: Experience[];
 };
 
-const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export const Profile = () => {
   const [profile, setProfile] = useState<ProfileData | null>(null);

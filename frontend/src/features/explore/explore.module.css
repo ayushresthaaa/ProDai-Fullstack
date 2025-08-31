@@ -28,15 +28,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* This will push categories to the right */
-  gap: 20px; /* Increased gap for better spacing */
+  justify-content: space-between;
+  gap: 20px;
   margin-bottom: 20px;
   width: 100%;
 }
+
 /* ===================== SEARCH BAR (Home-style applied) ===================== */
 .heroSearchBar {
-  flex: 0 0 600px; /* set fixed width or adjust as needed */
-  max-width: 600px; /* ensures it doesn’t grow too big */
+  flex: 0 0 600px;
+  max-width: 600px;
   position: relative;
   z-index: 10;
 }
@@ -46,9 +47,10 @@
   width: 100%;
   box-sizing: border-box;
 }
+
 .formInput {
   width: 100%;
-  padding: 12px 45px 12px 15px; /* top/bottom padding controls vertical alignment */
+  padding: 12px 45px 12px 15px;
   border: 1.5px solid #666;
   border-radius: 6px;
   background-color: #121212;
@@ -56,14 +58,15 @@
   outline: none;
   transition: all 0.3s;
   box-sizing: border-box;
-  line-height: 1.2; /* ensures text is vertically centered */
+  line-height: 1.2;
 }
 
 .formInput::placeholder {
   color: #888;
   opacity: 1;
-  line-height: normal; /* helps centering placeholder vertically */
+  line-height: normal;
 }
+
 .formInput:focus {
   border-color: #ac99ea;
   background-color: #1f1f1f;
@@ -115,19 +118,20 @@
   height: 18px;
 }
 
-/* Move category section to right side of search - now it will stay on the right */
+/* Move category section to right side of search */
 .categorySection {
   display: flex;
   gap: 12px;
   align-items: center;
-  flex-shrink: 0; /* Prevent shrinking */
-  margin-left: auto; /* Force to right side */
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 /* Professional YouTube-style dropdown buttons */
+/* Professional YouTube-style dropdown buttons */
 .dropdown {
   position: relative;
-  min-width: 140px; /* Ensure consistent minimum width */
+  min-width: 140px;
 }
 
 .dropdownButton {
@@ -140,7 +144,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 180px; /* Consistent width */
+  min-width: 180px;
   width: 100%;
   text-align: left;
   display: flex;
@@ -149,14 +153,81 @@
   backdrop-filter: blur(12px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   letter-spacing: 0.01em;
+  position: relative;
+  padding-right: 50px; /* Space for both clear button and dropdown arrow */
+  /* padding-right: 60px; */
 }
 
 .dropdownButton::after {
   content: "▼";
   font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.6);
-  margin-left: 12px;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Selected text container to prevent overflow */
+.selectedText {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+
+/* Clear button - properly positioned and styled */
+.clearBtn {
+  position: absolute;
+  right: 36px; /* Between text and dropdown arrow */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.clearBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Clear icon - same color as dropdown arrow */
+.clearIcon {
+  width: 10px;
+  height: 10px;
+  opacity: 0.6;
+  filter: brightness(0) saturate(100%) invert(100%);
+  transition: all 0.2s ease;
+}
+
+.clearBtn:hover .clearIcon {
+  opacity: 0.9;
+}
+
+/* Second dropdown variation - apply same clear button styling */
+.dropdown:nth-child(2) .clearBtn:hover {
+  background: rgba(230, 102, 204, 0.15);
+}
+
+.dropdown:nth-child(2) .clearIcon {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(63%) saturate(365%)
+    hue-rotate(296deg) brightness(96%) contrast(91%);
+  opacity: 0.7;
+}
+
+.dropdown:nth-child(2) .clearBtn:hover .clearIcon {
+  opacity: 1;
 }
 
 .dropdownButton:hover {
@@ -376,13 +447,13 @@
   letter-spacing: 0.01em;
 }
 
-/* ===================== KEEP EXISTING CARD STYLES ===================== */
+/* ===================== CARD STYLES ===================== */
 
 /* Container for all result cards */
 .resultContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 40px 24px; /* 40px between rows, 24px between columns */
+  gap: 40px 24px;
   margin-top: 32px;
   padding: 0 8px;
 }
@@ -450,6 +521,25 @@
   line-height: 1.4;
 }
 
+.nameWithTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.jobTitle {
+  margin-left: auto;
+  margin-right: 4px;
+  margin-top: 3px;
+  font-size: 0.9rem;
+  color: #e666cc;
+  font-weight: 500;
+  text-align: right;
+  flex-shrink: 0;
+}
+
 /* Location + Availability Container with hover effects */
 .addressAvailContainer {
   display: flex;
@@ -475,6 +565,7 @@
 .Avail {
   margin-left: auto;
 }
+
 .address:hover {
   background-color: #2a2a2a;
   color: #ac99ea;
@@ -640,28 +731,59 @@
   background-color: #925fc4;
 }
 
-/* ===================== RESPONSIVE DESIGN ===================== */
+/* ===================== IMPROVED RESPONSIVE DESIGN ===================== */
 
+/* Large tablets and small desktops */
+@media (max-width: 1024px) {
+  .exploreContainer {
+    padding: 16px;
+  }
+
+  .heroSearchBar {
+    flex: 0 0 500px;
+    max-width: 500px;
+  }
+
+  .dropdownButton {
+    min-width: 160px;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+}
+
+/* Tablets */
 @media (max-width: 968px) {
   .searchContainer {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 20px;
   }
 
   .heroSearchBar {
+    flex: none;
     max-width: none;
-    order: 1; /* Search bar first */
+    order: 1;
   }
 
   .categorySection {
-    justify-content: flex-end; /* Keep right-aligned even in column layout */
-    gap: 12px;
-    order: 2; /* Categories second */
-    margin-left: 0; /* Reset margin for mobile */
+    order: 2;
+    justify-content: center;
+    margin-left: 0;
+    gap: 16px;
+  }
+
+  .dropdown {
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .dropdownButton {
+    min-width: unset;
+    width: 100%;
   }
 }
 
+/* Small tablets */
 @media (max-width: 768px) {
   .exploreContainer {
     padding: 16px 12px;
@@ -672,59 +794,132 @@
     margin-bottom: 24px;
   }
 
+  .searchContainer {
+    gap: 16px;
+  }
+
   .categorySection {
-    flex-direction: row; /* Keep horizontal on tablets */
-    justify-content: space-between; /* Spread them out */
+    flex-direction: row;
+    justify-content: space-between;
     gap: 12px;
+    max-width: 100%;
   }
 
   .dropdown {
-    flex: 1; /* Equal width on mobile */
+    flex: 1;
     max-width: none;
-    min-width: unset;
+    min-width: 140px;
   }
 
   .dropdownButton {
-    width: 100%;
+    font-size: 0.8rem;
+    padding: 10px 14px;
     min-width: unset;
-    justify-content: space-between;
+  }
+
+  .dropdownMenu {
+    min-width: 140px;
+    max-width: 200px;
   }
 
   .resultContainer {
     grid-template-columns: 1fr;
     gap: 32px 20px;
     padding: 0;
+    margin-top: 24px;
   }
 
   .suggestionContainer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    margin-bottom: 20px;
+    gap: 8px;
   }
 
   .suggestionContainer h3 {
-    margin-bottom: 4px;
+    margin-right: 12px;
+    font-size: 0.85rem;
+  }
+
+  .suggestionItems {
+    font-size: 0.8rem;
+    padding: 6px 12px;
   }
 }
 
+/* Mobile phones */
 @media (max-width: 480px) {
+  .exploreContainer {
+    padding: 12px 8px;
+  }
+
   .topSection {
     padding: 16px 0;
+    margin-bottom: 20px;
   }
 
   .searchContainer {
     gap: 14px;
   }
 
+  .heroSearchBar {
+    width: 100%;
+  }
+
   .categorySection {
-    flex-direction: column; /* Stack vertically only on very small screens */
+    flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    width: 100%;
+  }
+
+  .dropdown {
+    width: 100%;
+    max-width: none;
+    min-width: unset;
   }
 
   .dropdownButton {
     font-size: 0.85rem;
-    padding: 10px 14px;
+    padding: 12px 16px;
+    width: 100%;
+    min-width: unset;
+  }
+
+  .dropdownMenu {
+    min-width: unset;
+    max-width: none;
+    width: 100%;
+  }
+
+  .formInput {
+    padding: 14px 48px 14px 16px;
+    font-size: 0.9rem;
+  }
+
+  .inputWithButton label {
+    top: 14px;
+  }
+
+  .formInput:focus + label,
+  .formInput:not(:placeholder-shown) + label {
+    top: -8px;
+  }
+
+  .searchBtn {
+    width: 42px;
+    height: calc(100% - 4px);
+  }
+
+  .suggestionContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .suggestionContainer h3 {
+    margin-bottom: 4px;
+    margin-right: 0;
+    align-self: flex-start;
   }
 
   .suggestionItems {
@@ -732,24 +927,152 @@
     padding: 6px 12px;
   }
 
+  .resultContainer {
+    gap: 24px 16px;
+    margin-top: 20px;
+  }
+
+  .resultsCard {
+    padding: 6px;
+  }
+
+  .avatarSection {
+    height: 160px;
+  }
+
+  .detailsSection {
+    padding: 12px 8px;
+  }
+
+  .nameWithTitle {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .jobTitle {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    font-size: 0.8rem;
+    text-align: left;
+  }
+
+  .addressAvailContainer {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .address,
+  .Avail {
+    font-size: 0.75rem;
+  }
+
+  .profileBio {
+    font-size: 0.75rem;
+    margin: 6px 0 10px 0;
+  }
+
+  .skillContainer {
+    gap: 4px;
+    margin: 6px 0 12px 0;
+  }
+
+  .skillContainer span {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+  .exploreContainer {
+    padding: 8px 6px;
+  }
+
+  .dropdownButton {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
   .formInput {
-    padding: 12px 48px 12px 16px;
+    padding: 12px 44px 12px 14px;
   }
 
   .searchBtn {
-    width: 40px;
+    width: 38px;
+  }
+
+  .resultContainer {
+    grid-template-columns: 1fr;
+    gap: 20px 12px;
+  }
+
+  .nameWithTitle {
+    gap: 2px;
+  }
+
+  .detailName {
+    font-size: 1rem;
+  }
+
+  .jobTitle {
+    font-size: 0.75rem;
+  }
+
+  .addressAvailContainer {
+    gap: 8px;
+  }
+
+  .address,
+  .Avail {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+
+  .address img,
+  .Avail img {
+    width: 12px;
+    height: 12px;
   }
 }
-.nameWithTitle {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+/* Make space for the clear button inside the dropdown button */
+.dropdownButton {
+  padding-right: 36px; /* add room for the clear button */
 }
-.jobTitle {
-  margin-left: auto; /* pushes it to the right */
-  margin-right: 4px;
-  margin-top: 3px;
-  font-size: 0.9rem;
-  color: #e666cc;
-  font-weight: 500;
+
+/* Clear button container */
+.clearBtn {
+  position: absolute;
+  right: 8px; /* after the dropdown arrow */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.clearBtn:hover {
+  opacity: 0.7;
+}
+
+/* Clear icon inside the button */
+.clearIcon {
+  width: 14px;
+  height: 14px;
+}
+/* Adjust dropdown button padding for better spacing */
+.dropdownButton {
+  padding-right: 60px; /* Increased from 50px to create more space */
+}
+
+/* Reposition clear button with more space from dropdown arrow */
+.clearBtn {
+  right: 42px; /* Increased from 36px to create more space from dropdown arrow */
+}
+.address div p {
+  margin: 0;
+  line-height: 1.1;
 }

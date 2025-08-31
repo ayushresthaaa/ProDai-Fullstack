@@ -333,6 +333,7 @@
 /* ===================== BUTTONS - PROFESSIONAL STYLING ===================== */
 
 /* Add buttons - Matching the elegant style */
+/* Updated CSS for Add Experience/Qualification buttons */
 button[type="button"]:not(.field-group button):not(.back-btn) {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -347,17 +348,40 @@ button[type="button"]:not(.field-group button):not(.back-btn) {
   margin-bottom: 16px;
   display: inline-flex;
   align-items: center;
+  justify-content: center; /* This centers the text horizontally */
   gap: 8px;
+  width: 100%; /* Optional: makes button full width */
+  border-color: rgba(172, 153, 234, 0.5);
+}
+button[type="button"]:not(.field-group button):not(.back-btn)::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-image: url("/src/assets/plus.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* Filter to match button text color - converts to white-ish */
+  filter: invert(0.8) sepia(0) saturate(0) hue-rotate(0deg) brightness(1)
+    contrast(1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Hover effect for Add Experience/Qualification buttons */
 button[type="button"]:not(.field-group button):not(.back-btn):hover {
-  background: rgba(172, 153, 234, 0.15);
-  border-color: rgba(172, 153, 234, 0.3);
+  background: rgba(172, 153, 234, 0.2);
+  border-color: rgba(172, 153, 234, 0.5);
   color: #ac99ea;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(172, 153, 234, 0.2);
 }
 
+/* Change plus icon color on hover to match purple theme */
+button[type="button"]:not(.field-group button):not(.back-btn):hover::before {
+  /* Filter to convert to purple (#ac99ea) */
+  filter: invert(0.7) sepia(0.3) saturate(2) hue-rotate(240deg) brightness(1.1)
+    contrast(1.2);
+}
 /* Remove buttons in field groups */
 .field-group button[type="button"] {
   align-self: flex-end;
