@@ -1076,3 +1076,57 @@
   margin: 0;
   line-height: 1.1;
 }
+/* Add these styles to your explore.module.css */
+
+.workDetails {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 6px 0 8px 0;
+}
+
+.workMode,
+.empType {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+}
+
+.workMode {
+  background: rgba(172, 153, 234, 0.15);
+  color: #ac99ea;
+  border: 1px solid rgba(172, 153, 234, 0.3);
+}
+
+.empType {
+  background: rgba(230, 102, 204, 0.15);
+  color: #e666cc;
+  border: 1px solid rgba(230, 102, 204, 0.3);
+}
+
+/* Optional hover effects */
+.workMode:hover {
+  background: rgba(172, 153, 234, 0.25);
+  transform: translateY(-1px);
+}
+
+.empType:hover {
+  background: rgba(230, 102, 204, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .workDetails {
+    margin: 4px 0 6px 0;
+  }
+
+  .workMode,
+  .empType {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+}

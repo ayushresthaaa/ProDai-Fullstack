@@ -137,6 +137,7 @@ export const suggestProfiles = async (req, res) => {
 
     const regex = new RegExp(q.trim(), "i");
 
+    // Fetch profiles based on fields in Profile itself
     const profiles = await Profile.find({
       $or: [
         { bio: regex },
@@ -158,17 +159,20 @@ export const suggestProfiles = async (req, res) => {
     profiles.forEach((p) => {
       if (!p.userId || p.userId._id.toString() === userId) return;
 
+      // Skills
       if (Array.isArray(p.skills)) {
         p.skills.forEach((s) => {
           if (regex.test(s)) suggestions.push(s.toLowerCase());
         });
       }
 
+      // Bio
       if (p.bio && regex.test(p.bio)) {
         const matches = p.bio.match(regex);
         if (matches) suggestions.push(...matches.map((m) => m.toLowerCase()));
       }
 
+      // Experience
       if (Array.isArray(p.experience)) {
         p.experience.forEach((exp) => {
           if (exp.title && regex.test(exp.title))
@@ -178,8 +182,15 @@ export const suggestProfiles = async (req, res) => {
         });
       }
 
+      // Location
       if (p.location && regex.test(p.location))
         suggestions.push(p.location.toLowerCase());
+
+      // ✅ User full name & username
+      if (p.userId.fullname && regex.test(p.userId.fullname))
+        suggestions.push(p.userId.fullname.toLowerCase());
+      if (p.userId.username && regex.test(p.userId.username))
+        suggestions.push(p.userId.username.toLowerCase());
     });
 
     // Add category keywords (optional)
@@ -189,7 +200,7 @@ export const suggestProfiles = async (req, res) => {
       });
     });
 
-    // Remove duplicates (case-insensitive)
+    // Remove duplicates (case-insensitive) and limit to 10
     const uniqueSuggestions = [...new Set(suggestions)].slice(0, 10);
 
     res.json(uniqueSuggestions);

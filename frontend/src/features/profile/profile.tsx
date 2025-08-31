@@ -42,6 +42,8 @@ type ProfileData = {
   contact?: Contact;
   qualifications: Qualification[];
   experience: Experience[];
+  workMode: string;
+  employmentType: string;
 };
 
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -86,7 +88,14 @@ export const Profile = () => {
                 <h1 className="profile-name">{profile.userId.fullname}</h1>
                 {profile.experience && profile.experience.length > 0 && (
                   <span className="latest-job-title">
-                    {profile.experience[profile.experience.length - 1].title}
+                    {
+                      profile.experience.sort((a, b) => {
+                        // Sort by start year descending (most recent first)
+                        const yearA = parseInt(a.startYear || "0");
+                        const yearB = parseInt(b.startYear || "0");
+                        return yearB - yearA;
+                      })[0].title
+                    }
                   </span>
                 )}
                 {profile.location && (
@@ -160,20 +169,42 @@ export const Profile = () => {
 
             {/* Qualifications */}
             {profile.qualifications?.length > 0 && (
-              <div className="profile-card qualifications-section">
-                <h2>Education</h2>
+              <div className="profile-card contact-section">
+                <h2>Qualifications</h2>
                 {profile.qualifications.map((qual, idx) => (
-                  <div key={idx} className="edu-item">
-                    <h3 className="item-title">{qual.title}</h3>
-                    {qual.institute && (
-                      <p className="item-subtitle">
-                        {qual.institute} • {qual.year}
-                      </p>
-                    )}
+                  <div key={idx} className="contact-item">
+                    {/* <img
+                      src="/src/assets/education.png" // You can add an education icon
+                      alt="Qualification"
+                      className="icon-small"
+                    /> */}
+                    <span className="contact-text">
+                      {qual.title}
+                      {qual.institute && ` • ${qual.institute}`}
+                      {qual.year && ` • ${qual.year}`}
+                    </span>
                   </div>
                 ))}
               </div>
             )}
+
+            {/* Work Preferences Section */}
+            {/* Work Preferences Section - FIXED */}
+            <div className="profile-card work-preferences-section">
+              <h2 style={{ fontSize: "18px", fontWeight: 500 }}>
+                Work Preferences
+              </h2>
+              {profile.employmentType && (
+                <p className="preference-item">
+                  <strong>Employment Type:</strong> {profile.employmentType}
+                </p>
+              )}
+              {profile.workMode && (
+                <p className="preference-item">
+                  <strong>Work Mode:</strong> {profile.workMode}
+                </p>
+              )}
+            </div>
 
             {/* Contact Info */}
             <div className="profile-card contact-section">

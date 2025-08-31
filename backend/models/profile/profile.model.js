@@ -32,7 +32,16 @@ const ProfileSchema = new mongoose.Schema(
         year: { type: String },
       },
     ],
-
+    employmentType: {
+      type: String,
+      enum: ["Full-time", "Part-time", "Contract", "Internship"],
+      default: "Full-time", // optional default for old profiles
+    },
+    workMode: {
+      type: String,
+      enum: ["Onsite", "Remote", "Hybrid"],
+      default: "Onsite", // optional default for old profiles
+    },
     experience: [
       {
         title: { type: String, required: true },

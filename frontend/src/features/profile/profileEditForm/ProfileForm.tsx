@@ -23,6 +23,8 @@ type ProfileFormData = {
   contact?: Contact;
   qualifications?: Qualification[];
   experience?: Experience[];
+  employmentType?: "Full-time" | "Part-time" | "Contract" | "Internship";
+  workMode?: "Onsite" | "Remote" | "Hybrid"; //
 };
 
 export const ProfileForm = () => {
@@ -100,7 +102,12 @@ export const ProfileForm = () => {
     const formData = new FormData();
     formData.append("file", avatarFile);
     formData.append("upload_preset", "profile_upload");
-
+    // formData.append(
+    //   "transformation",
+    //   JSON.stringify([
+    //     { width: 300, height: 300, crop: "thumb", gravity: "face" },
+    //   ])
+    // );
     try {
       const res = await fetch(
         "https://api.cloudinary.com/v1_1/dgvhwxtqp/image/upload",
@@ -169,7 +176,6 @@ export const ProfileForm = () => {
                 onChange={handleAvatarChange}
               />
             </div>
-            {uploading && <p>Uploading...</p>}
           </div>
 
           {/* Location */}
@@ -219,6 +225,28 @@ export const ProfileForm = () => {
                 </label>
               ))}
             </div>
+          </div>
+          {/* Employment Type */}
+          <div className="form-group">
+            <label>Employment Type</label>
+            <select {...register("employmentType")} className="form-input">
+              <option value="">Select type</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Internship">Internship</option>
+            </select>
+          </div>
+
+          {/* Work Mode */}
+          <div className="form-group">
+            <label>Work Mode</label>
+            <select {...register("workMode")} className="form-input">
+              <option value="">Select mode</option>
+              <option value="Onsite">Onsite</option>
+              <option value="Remote">Remote</option>
+              <option value="Hybrid">Hybrid</option>
+            </select>
           </div>
 
           {/* Contact */}
@@ -319,18 +347,24 @@ export const ProfileForm = () => {
       </div>
 
       {/* Modal */}
-      {(successMessage || errorMessage) && (
+      {(successMessage || errorMessage || uploading) && (
         <div className="modal-backdrop">
           <div className="modal">
-            <p>{successMessage || errorMessage}</p>
-            <button
-              onClick={() => {
-                setSuccessMessage(null);
-                setErrorMessage(null);
-              }}
-            >
-              Close
-            </button>
+            {uploading ? (
+              <p>Uploading avatar...</p>
+            ) : (
+              <p>{successMessage || errorMessage}</p>
+            )}
+            {!uploading && (
+              <button
+                onClick={() => {
+                  setSuccessMessage(null);
+                  setErrorMessage(null);
+                }}
+              >
+                Close
+              </button>
+            )}
           </div>
         </div>
       )}

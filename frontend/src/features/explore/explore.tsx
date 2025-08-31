@@ -34,6 +34,8 @@ interface Profile {
     fullname?: string;
   };
   experience?: Experience[];
+  workMode?: string;
+  employmentType: string;
 }
 
 export const Explore = () => {
@@ -528,15 +530,15 @@ export const Explore = () => {
                       {profile.userId.fullname}
                     </h2>
                     {profile.experience && profile.experience.length > 0 && (
-                      <span className={styles.jobTitle}>
-                        {profile.experience[profile.experience.length - 1]
-                          .endYear === "Present"
-                          ? `${
-                              profile.experience[profile.experience.length - 1]
-                                .title
-                            }`
-                          : profile.experience[profile.experience.length - 1]
-                              .title}
+                      <span className="latest-job-title">
+                        {
+                          profile.experience.sort((a, b) => {
+                            // Sort by start year descending (most recent first)
+                            const yearA = parseInt(a.startYear || "0");
+                            const yearB = parseInt(b.startYear || "0");
+                            return yearB - yearA;
+                          })[0].title
+                        }
                       </span>
                     )}
                   </div>
@@ -569,24 +571,35 @@ export const Explore = () => {
                       </span>
                     )}
                   </div>
+
                   {profile.bio && (
                     <p className={styles.profileBio}>
                       {profile.bio.split(" ").slice(0, 15).join(" ") +
                         (profile.bio.split(" ").length > 6 ? "..." : "")}
                     </p>
                   )}
-
+                  <div className={styles.workDetails}>
+                    {profile.workMode && (
+                      <span className={styles.workMode}>
+                        {profile.workMode}
+                      </span>
+                    )}
+                    {profile.employmentType && (
+                      <span className={styles.empType}>
+                        {profile.employmentType}
+                      </span>
+                    )}
+                  </div>
                   <div className={styles.skillContainer}>
                     {profile.skills.slice(0, 6).map((skill) => (
                       <span key={skill}>{skill}</span>
                     ))}
-                    {profile.skills.length > 4 && (
+                    {profile.skills.length > 6 && (
                       <span className={styles.moreSkills}>
-                        +{profile.skills.length - 4} more
+                        +{profile.skills.length - 6} more
                       </span>
                     )}
                   </div>
-
                   <div className={styles.contactSection}>
                     {/* {profile.contact.email && (
                       <span>Email: {profile.contact.email}</span>

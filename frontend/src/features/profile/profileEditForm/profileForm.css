@@ -350,8 +350,8 @@ button[type="button"]:not(.field-group button):not(.back-btn) {
   align-items: center;
   justify-content: center; /* This centers the text horizontally */
   gap: 8px;
-  width: 100%; /* Optional: makes button full width */
   border-color: rgba(172, 153, 234, 0.5);
+  width: 100%; /* Optional: makes button full width */
 }
 button[type="button"]:not(.field-group button):not(.back-btn)::before {
   content: "";
@@ -647,4 +647,120 @@ button[type="button"]:not(.field-group button):not(.back-btn):hover::before {
   font-weight: 500;
   text-align: center;
   font-style: italic;
+}
+/* ===================== ENHANCED DROPDOWN STYLING ===================== */
+
+/* Base select styling - your existing code with improvements */
+select.form-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 12px 40px 12px 16px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+
+  /* Custom arrow */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='rgba(255,255,255,0.8)' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 12px;
+}
+
+/* Hover & focus states */
+select.form-input:hover {
+  border-color: rgba(172, 153, 234, 0.5);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+select.form-input:focus {
+  outline: none;
+  border-color: rgba(172, 153, 234, 0.6);
+  background-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(172, 153, 234, 0.15);
+}
+
+/* ===================== OPTION STYLING - THE KEY FIX ===================== */
+
+/* Style the dropdown options to match your dark theme */
+select.form-input option {
+  background-color: #2a2a2a !important; /* Dark background */
+  color: rgba(255, 255, 255, 0.9) !important; /* Light text */
+  padding: 12px 16px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  border: none !important;
+}
+
+/* Hover state for options */
+select.form-input option:hover {
+  background-color: rgba(172, 153, 234, 0.2) !important;
+  color: #ac99ea !important;
+}
+
+/* Selected option styling */
+select.form-input option:checked {
+  background-color: rgba(172, 153, 234, 0.3) !important;
+  color: #ac99ea !important;
+  font-weight: 600 !important;
+}
+
+/* Firefox specific fixes */
+select.form-input:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Alternative approach for better cross-browser support */
+@-moz-document url-prefix() {
+  select.form-input {
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  select.form-input option {
+    background-color: #2a2a2a;
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select.form-input option {
+    background-color: #2a2a2a;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  select.form-input option:hover {
+    background-color: rgba(172, 153, 234, 0.2);
+  }
+}
+
+/* ===================== ADDITIONAL ENHANCEMENTS ===================== */
+
+/* Loading state for when form is submitting */
+select.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Error state styling */
+select.form-input.error {
+  border-color: rgba(239, 68, 68, 0.6);
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Custom focus indicator for accessibility */
+select.form-input:focus-visible {
+  outline: 2px solid rgba(172, 153, 234, 0.5);
+  outline-offset: 2px;
 }

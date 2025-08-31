@@ -43,9 +43,11 @@ type ProfileData = {
   contact?: Contact;
   qualifications: Qualification[];
   experience: Experience[];
+  workMode: string;
+  employmentType: string;
 };
 
-const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export const ViewProfile = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -131,7 +133,14 @@ export const ViewProfile = () => {
                 {/* Latest Job Title */}
                 {profile.experience && profile.experience.length > 0 && (
                   <span className="latest-job-title">
-                    {profile.experience[profile.experience.length - 1].title}
+                    {
+                      profile.experience.sort((a, b) => {
+                        // Sort by start year descending (most recent first)
+                        const yearA = parseInt(a.startYear || "0");
+                        const yearB = parseInt(b.startYear || "0");
+                        return yearB - yearA;
+                      })[0].title
+                    }
                   </span>
                 )}
                 {profile.location && (
@@ -229,7 +238,7 @@ export const ViewProfile = () => {
             {/* Education Section */}
             {profile.qualifications?.length > 0 && (
               <div className="profile-card qualifications-section">
-                <h2>Education & Qualifications</h2>
+                <h2>Qualifications</h2>
                 {profile.qualifications.map((qual, idx) => (
                   <div key={idx} className="edu-item">
                     <h3 className="item-title">{qual.title}</h3>
@@ -244,6 +253,22 @@ export const ViewProfile = () => {
                 ))}
               </div>
             )}
+            {/* Work Preferences Section */}
+            <div className="profile-card work-preferences-section">
+              <h2 style={{ fontSize: "18px", fontWeight: 500 }}>
+                Work Preferences
+              </h2>
+              {profile.employmentType && (
+                <p className="preference-item">
+                  <strong>Employment Type:</strong> {profile.employmentType}
+                </p>
+              )}
+              {profile.workMode && (
+                <p className="preference-item">
+                  <strong>Work Mode:</strong> {profile.workMode}
+                </p>
+              )}
+            </div>
 
             {/* Contact Information */}
             <div className="profile-card contact-section">

@@ -89,7 +89,7 @@ export const Home = () => {
               <span
                 className={styles.categoryChip}
                 onClick={() => {
-                  handleClick("Mobile Apps");
+                  handleClick("mobile apps");
                 }}
               >
                 Mobile Apps
