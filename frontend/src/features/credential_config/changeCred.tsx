@@ -23,6 +23,7 @@ import {
 import { Navbar } from "../../components/ui/navbar/Navbar";
 import { ProfessionalNavbar } from "../../components/ui/navbar/ProNavbar";
 import { Footer } from "../../components/ui/footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 export const ChangeCred = () => {
   const [success, setSuccessMessage] = useState("");
@@ -114,12 +115,21 @@ export const ChangeCred = () => {
       setSuccessMessage("");
     }
   };
+  const navigate = useNavigate();
+  const handleBackClick = () => {
+    navigate("/home");
+  };
 
   return (
     <>
       {usertype === "professional" ? <ProfessionalNavbar /> : <Navbar />}
       <div className={styles.container}>
-        <h1 className={styles.title}>Manage Your Account</h1>
+        <div className="back-btn" onClick={handleBackClick}>
+          ← Back to Home
+        </div>
+        {/* <h1 className={styles.title} style={{ fontSize: "27px" }}>
+          Profile Settings
+        </h1> */}
 
         {/* Username Form */}
         <form

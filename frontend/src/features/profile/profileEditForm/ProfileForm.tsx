@@ -131,6 +131,8 @@ export const ProfileForm = () => {
 
       await createOrUpdateProfile(payload);
       setSuccessMessage("Profile saved successfully!");
+
+      navigate("/profile");
     } catch (err) {
       console.error("Error saving profile:", err);
       setErrorMessage("Failed to save profile. Check console.");
@@ -140,9 +142,13 @@ export const ProfileForm = () => {
   return (
     <>
       <ProfessionalNavbar />
+
       <div className="profile-form-container">
+        <div className="back-btn" onClick={() => navigate("/profile")}>
+          ← Back to Profile
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="profile-form">
-          <h2>Edit your Profile</h2>
+          <h2 style={{ textAlign: "center" }}>Edit your Profile</h2>
 
           {/* Avatar Upload */}
           <div className="form-group">
@@ -308,13 +314,6 @@ export const ProfileForm = () => {
           {/* Submit */}
           <div className="form-actions">
             <button type="submit">Save Profile</button>
-            <button
-              type="button"
-              className="back-btn"
-              onClick={() => navigate("/profile")}
-            >
-              ← Back
-            </button>
           </div>
         </form>
       </div>

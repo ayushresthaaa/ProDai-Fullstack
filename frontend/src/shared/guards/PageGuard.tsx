@@ -1,3 +1,4 @@
+//not allowing to go the login or register for the logged in users
 import React from "react";
 import { Navigate } from "react-router-dom";
 

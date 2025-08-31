@@ -2,39 +2,43 @@
 .exploreContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: white;
   background-color: #1f1f1f;
 }
 
-/* Search Pros title with gradient and slightly smaller */
-.searchContainer h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #ac99ea, #e666cc, #53ceda);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  margin: 0;
-  text-align: center;
+/* ===================== PROFESSIONAL SEARCH HEADER ===================== */
+
+.topSection {
+  background: none;
+  border: none;
+  padding: 24px 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Search container layout */
+/* Hide the title completely for clean layout */
+.searchContainer h1 {
+  display: none;
+}
+
+/* Main search container - horizontal layout with categories on right */
 .searchContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between; /* This will push categories to the right */
+  gap: 20px; /* Increased gap for better spacing */
   margin-bottom: 20px;
-}
-
-/* Use Home's search bar styles but centered and wider */
-.heroSearchBar {
   width: 100%;
-  max-width: 500px;
-  min-width: 350px;
+}
+/* ===================== SEARCH BAR (Home-style applied) ===================== */
+.heroSearchBar {
+  flex: 0 0 600px; /* set fixed width or adjust as needed */
+  max-width: 600px; /* ensures it doesn’t grow too big */
+  position: relative;
+  z-index: 10;
 }
 
 .inputWithButton {
@@ -42,10 +46,9 @@
   width: 100%;
   box-sizing: border-box;
 }
-
 .formInput {
   width: 100%;
-  padding: 12px 50px 12px 15px;
+  padding: 12px 45px 12px 15px; /* top/bottom padding controls vertical alignment */
   border: 1.5px solid #666;
   border-radius: 6px;
   background-color: #121212;
@@ -53,60 +56,54 @@
   outline: none;
   transition: all 0.3s;
   box-sizing: border-box;
-  font-size: 1rem;
-}
-
-.formInput:focus {
-  border-color: #ac99ea;
-  background-color: #1f1f1f;
+  line-height: 1.2; /* ensures text is vertically centered */
 }
 
 .formInput::placeholder {
   color: #888;
   opacity: 1;
+  line-height: normal; /* helps centering placeholder vertically */
+}
+.formInput:focus {
+  border-color: #ac99ea;
+  background-color: #1f1f1f;
 }
 
 .inputWithButton label {
   position: absolute;
   left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 12px;
   color: #888;
   font-size: 1rem;
   pointer-events: none;
-  transition: all 0.2s ease;
-  background-color: transparent;
-  z-index: 1;
+  transition: 0.2s ease all;
 }
 
-/* Fixed label positioning when focused or has content */
 .formInput:focus + label,
 .formInput:not(:placeholder-shown) + label {
-  top: -7px;
+  top: -10px;
   left: 10px;
   font-size: 0.75rem;
   color: #ac99ea;
-  background-color: transparent;
+  background-color: #1f1f1f;
   padding: 0 4px;
-  transform: translateY(-50%);
 }
 
-/* Button positioned at the right edge of the input */
 .searchBtn {
   position: absolute;
-  top: -7.5px;
-  right: 2px;
+  top: 43%;
+  right: 2.6px;
+  transform: translateY(-56%);
   height: calc(100% - 5px);
-  width: 45px;
+  width: 39px;
   border: none;
-  border-radius: 0 4px 4px 0;
+  border-radius: 3px;
   background-color: #ac99ea;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s;
-  z-index: 2;
 }
 
 .searchBtn:hover {
@@ -116,442 +113,500 @@
 .searchBtn img {
   width: 18px;
   height: 18px;
-  filter: brightness(0) invert(1);
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .heroSearchBar {
-    max-width: 100%;
-    min-width: auto;
-  }
+/* Move category section to right side of search - now it will stay on the right */
+.categorySection {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0; /* Prevent shrinking */
+  margin-left: auto; /* Force to right side */
+}
 
-  .searchContainer h1 {
-    font-size: 1.8rem;
+/* Professional YouTube-style dropdown buttons */
+.dropdown {
+  position: relative;
+  min-width: 140px; /* Ensure consistent minimum width */
+}
+
+.dropdownButton {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 12px 18px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 180px; /* Consistent width */
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  letter-spacing: 0.01em;
+}
+
+.dropdownButton::after {
+  content: "▼";
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 12px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdownButton:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.dropdownButton:focus,
+.dropdownButton:active {
+  outline: none;
+  border-color: rgba(172, 153, 234, 0.5);
+  box-shadow: 0 0 0 3px rgba(172, 153, 234, 0.1);
+}
+
+/* YouTube-style clean dropdown menu */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 180px;
+  max-width: 240px;
+  background: rgba(24, 24, 24, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  z-index: 1000;
+  list-style: none;
+  padding: 8px 0;
+  backdrop-filter: blur(20px);
+  max-height: 280px;
+  overflow-y: auto;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
+
+.dropdownMenu li {
+  padding: 12px 18px;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+
+.dropdownMenu li:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-weight: 500;
+}
+
+.dropdownMenu li:active {
+  background: rgba(172, 153, 234, 0.15);
+}
+
+/* Second dropdown styling variation */
+.dropdown:nth-child(2) .dropdownButton {
+  border-color: rgba(230, 102, 204, 0.15);
+}
+
+.dropdown:nth-child(2) .dropdownButton:hover {
+  border-color: rgba(230, 102, 204, 0.25);
+  background: rgba(230, 102, 204, 0.06);
+}
+
+.dropdown:nth-child(2) .dropdownButton:focus {
+  border-color: rgba(230, 102, 204, 0.5);
+  box-shadow: 0 0 0 3px rgba(230, 102, 204, 0.1);
+}
+
+.dropdown:nth-child(2) .dropdownMenu {
+  border-color: rgba(230, 102, 204, 0.15);
+}
+
+/* ===================== CLEAN SUGGESTIONS LAYOUT ===================== */
 
 .suggestionContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 15px;
-  justify-content: flex-start;
   align-items: center;
+  margin-bottom: 24px;
+  padding-left: 2px;
 }
 
 .suggestionContainer h3 {
-  width: 100%;
-  text-align: left;
-  margin-bottom: 8px;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #ccc;
+  margin: 0 18px 0 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
 }
 
 .suggestionItems {
-  padding: 6px 12px;
-  border-radius: 20px;
-  background-color: #2f2f2f;
-  border: 1px solid #666;
+  padding: 8px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.01em;
 }
 
 .suggestionItems:hover {
-  background-color: #ac99ea;
-  color: #1f1f1f;
-  border-color: #ac99ea;
+  background: rgba(172, 153, 234, 0.15);
+  color: #ffffff;
+  border-color: rgba(172, 153, 234, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(172, 153, 234, 0.2);
 }
 
-/* Category Dropdown Section */
-.categorySection {
-  display: flex;
-  gap: 10px;
-  margin: 30px 0;
-  justify-content: flex-end; /* Align all dropdowns to left */
-  align-items: flex-start;
-  flex-wrap: wrap;
+.suggestionItems:active {
+  transform: translateY(0);
 }
 
-/* Dropdown Container */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+/* ===================== ENHANCED AUTOCOMPLETE DROPDOWN ===================== */
 
-/* Dropdown Button */
-.dropdownButton {
-  background-color: #121212;
-  border: 2px solid #9780e5;
-  border-radius: 10px;
-  padding: 12px 30px 12px 20px;
-  color: gray;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px rgba(172, 153, 234, 0.2);
-  min-width: 200px;
-  text-align: left;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.dropdownButton:hover {
-  box-shadow: 0 0 15px rgba(172, 153, 234, 0.4);
-  border-color: #ac99ea;
-  background-color: #1a1a1a;
-}
-
-.dropdownButton:focus {
-  outline: none;
-  border-color: #ac99ea;
-  box-shadow: 0 0 20px rgba(172, 153, 234, 0.5);
-}
-
-/* Dropdown Menu aligned left of button */
-.dropdownMenu {
+.suggestionsList {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 6px);
   left: 0;
-  right: auto;
-  width: 100%;
-  min-width: 150px;
-  max-width: 220px;
-  background-color: #121212;
-  border: 2px solid #9780e5;
-  border-radius: 10px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(172, 153, 234, 0.2);
-  z-index: 1000;
-  margin-top: 5px;
+  right: 0;
+  background: rgba(24, 24, 24, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  max-height: 240px;
   overflow-y: auto;
+  z-index: 1001;
   list-style: none;
-  padding: 0;
+  padding: 8px 0;
+  margin: 0;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dropdown Menu Items */
-.dropdownMenu li {
-  padding: 12px 20px;
-  color: #ccc;
+.suggestionsList li {
+  padding: 12px 18px;
+  color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-bottom: 1px solid rgba(151, 128, 229, 0.1);
-  font-size: 0.95rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
 }
 
-.dropdownMenu li:last-child {
-  border-bottom: none;
-}
-
-.dropdownMenu li:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(172, 153, 234, 0.1),
-    rgba(230, 102, 204, 0.1)
-  );
+.suggestionsList li:hover {
+  background: rgba(255, 255, 255, 0.08);
   color: white;
-  padding-left: 25px;
+  font-weight: 500;
 }
 
-.dropdownMenu li:first-child {
-  border-radius: 8px 8px 0 0;
+.suggestionsList li:active {
+  background: rgba(172, 153, 234, 0.15);
 }
 
-.dropdownMenu li:last-child {
-  border-radius: 0 0 8px 8px;
-}
-
-/* Scrollbar */
-.dropdownMenu::-webkit-scrollbar {
+/* Custom scrollbar for all dropdowns */
+.dropdownMenu::-webkit-scrollbar,
+.suggestionsList::-webkit-scrollbar {
   width: 6px;
 }
 
-.dropdownMenu::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+.dropdownMenu::-webkit-scrollbar-track,
+.suggestionsList::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 3px;
 }
 
-.dropdownMenu::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #ac99ea, #e666cc);
+.dropdownMenu::-webkit-scrollbar-thumb,
+.suggestionsList::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 3px;
+  transition: background 0.3s;
 }
 
-.dropdownMenu::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #925fc4, #d442b8);
+.dropdownMenu::-webkit-scrollbar-thumb:hover,
+.suggestionsList::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* Gradient variations for multiple dropdowns */
-.dropdown:nth-child(2) .dropdownButton {
-  border-color: #e666cc;
-  box-shadow: 0 0 8px rgba(230, 102, 204, 0.2);
+/* ===================== PROFESSIONAL RESULT COUNTER ===================== */
+
+.resultCounter {
+  text-align: left;
+  margin: 0 0 32px 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  padding-left: 2px;
 }
 
-.dropdown:nth-child(2) .dropdownButton:hover {
-  border-color: #e666cc;
-  box-shadow: 0 0 15px rgba(230, 102, 204, 0.4);
+.resultCounter p {
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
-.dropdown:nth-child(2) .dropdownMenu {
-  border-color: #e666cc;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(230, 102, 204, 0.2);
-}
+/* ===================== KEEP EXISTING CARD STYLES ===================== */
 
-.dropdown:nth-child(2) .dropdownMenu li:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(230, 102, 204, 0.1),
-    rgba(83, 206, 218, 0.1)
-  );
-}
-
-.dropdown:nth-child(3) .dropdownButton {
-  border-color: #53ceda;
-  box-shadow: 0 0 8px rgba(83, 206, 218, 0.2);
-}
-
-.dropdown:nth-child(3) .dropdownButton:hover {
-  border-color: #53ceda;
-  box-shadow: 0 0 15px rgba(83, 206, 218, 0.4);
-}
-
-.dropdown:nth-child(3) .dropdownMenu {
-  border-color: #53ceda;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(83, 206, 218, 0.2);
-}
-
-.dropdown:nth-child(3) .dropdownMenu li:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(83, 206, 218, 0.1),
-    rgba(172, 153, 234, 0.1)
-  );
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .categorySection {
-    flex-direction: column;
-    align-items: flex-start; /* Keep left alignment */
-    gap: 15px;
-  }
-
-  .dropdown {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .dropdownButton {
-    width: 100%;
-    min-width: auto;
-  }
-
-  .dropdownMenu {
-    width: auto; /* Fit content */
-    min-width: 100px;
-    max-width: 300px;
-  }
-}
-
-@media (max-width: 480px) {
-  .dropdownButton {
-    font-size: 0.9rem;
-    padding: 10px 15px;
-  }
-
-  .dropdownMenu li {
-    padding: 10px 15px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Container for all result cards */ /* Container for all result cards */ /* Container for all result cards */
 /* Container for all result cards */
 .resultContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px; /* space between cards in both rows and columns */
-  justify-content: center; /* center cards in each row */
-  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 40px 24px; /* 40px between rows, 24px between columns */
+  margin-top: 32px;
+  padding: 0 8px;
 }
 
-/* Individual Card */
+/* Individual Card - Dark Theme Layout */
 .resultsCard {
-  flex: 0 1 250px; /* fixed base width but allows wrapping */
-  background-color: #1e1e1e;
-  border: 2px solid #666;
+  background-color: #121212;
+  border: 2px solid #333;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  height: 400px; /* optional fixed height for uniformity */
+  height: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 8px;
 }
 
-/* Hover effect */
 .resultsCard:hover {
+  border-color: #ac99ea;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(172, 153, 234, 0.2);
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
 }
 
-/* Avatar Section */
+/* Avatar Section with padding/spacing */
 .avatarSection {
-  width: 100%;
-  height: 150px;
+  position: relative;
+  height: 180px;
   overflow: hidden;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 
 .avatarSection img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s;
+  transition: transform 0.3s ease;
+  border-radius: 8px;
 }
 
 .resultsCard:hover .avatarSection img {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
-/* Details Section */
+/* Details Section - Dark theme and organized */
 .detailsSection {
-  padding: 12px;
+  padding: 16px 12px 16px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  color: #fff;
-  flex-grow: 1; /* ensures this section takes remaining space */
+  gap: 8px;
+  flex-grow: 1;
+  color: #ffffff;
+  background-color: transparent;
 }
 
-/* Username */
+/* Username - Dark theme typography */
 .detailName {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  text-align: center;
-  background: linear-gradient(135deg, #ac99ea, #e666cc, #53ceda);
-  -webkit-background-clip: text;
-  color: transparent;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.4;
 }
 
-/* Location + Availability */
+/* Location + Availability Container with hover effects */
 .addressAvailContainer {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  font-size: 0.85rem;
-  color: #ccc;
+  align-items: center;
+  gap: 16px;
+  margin: 4px 0;
+  flex-wrap: wrap;
 }
 
 .address,
 .Avail {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  font-size: 0.6rem;
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-/* Bio */
+.Avail {
+  margin-left: auto;
+}
+.address:hover {
+  background-color: #2a2a2a;
+  color: #ac99ea;
+  transform: translateY(-1px);
+}
+
+.Avail:hover {
+  background-color: #2a2a2a;
+  color: #e666cc;
+  transform: translateY(-1px);
+}
+
+.address img,
+.Avail img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
+  filter: brightness(0) saturate(100%) invert(80%) sepia(7%) saturate(400%)
+    hue-rotate(180deg) brightness(95%) contrast(85%);
+  transition: filter 0.3s ease;
+}
+
+.address:hover img {
+  filter: brightness(0) saturate(100%) invert(56%) sepia(69%) saturate(502%)
+    hue-rotate(223deg) brightness(96%) contrast(92%);
+}
+
+.Avail:hover img {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(63%) saturate(365%)
+    hue-rotate(296deg) brightness(96%) contrast(91%);
+}
+
+/* Bio Text - Dark theme */
 .profileBio {
   font-size: 0.8rem;
   color: #bbb;
-  text-align: center;
-  line-height: 1.2rem;
-  margin: 4px 0;
+  line-height: 1.4;
+  margin: 8px 0 12px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Skills */
+/* Skills Container with hover effects */
 .skillContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  justify-content: center;
-  margin-top: 4px;
+  gap: 6px;
+  margin: 8px 0 16px 0;
 }
 
 .skillContainer span {
-  background-color: #3a3a3a;
-  padding: 3px 6px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  color: #fff;
+  background-color: #2a2a2a;
+  color: #ccc;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid #444;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-/* View Profile Button - always at bottom */
-.viewProfile {
-  margin-top: auto; /* pushes button to the bottom */
-  padding: 6px 12px;
-  background-color: #1a1a1a;
-  color: #ac99ea;
+.skillContainer span:hover {
+  background-color: #ac99ea;
+  color: #1f1f1f;
+  border-color: #ac99ea;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(172, 153, 234, 0.3);
+}
+
+.moreSkills {
+  background-color: #2a2a2a !important;
+  color: #e666cc !important;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.8rem;
   font-weight: 600;
-  border: 2px solid #ac99ea;
-  border-radius: 6px;
+  border: 1px solid #444 !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.moreSkills:hover {
+  background-color: #e666cc !important;
+  color: #1f1f1f !important;
+  border-color: #e666cc !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(230, 102, 204, 0.3);
+}
+
+/* Contact Section - Hidden for clean look */
+.contactSection {
+  display: none;
+}
+
+/* View Profile Button - Professional CTA */
+.viewProfile {
+  margin-top: auto;
+  padding: 10px 16px;
+  background-color: #ffffff;
+  color: #404145;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 2px solid #404145;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-self: center;
+  text-align: center;
+  align-self: stretch;
 }
 
 .viewProfile:hover {
-  background-color: #ac99ea;
-  color: #1a1a1a;
+  background-color: #404145;
+  color: #ffffff;
 }
 
-/* Icons next to username info */
-.address img,
-.Avail img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  filter: brightness(0) saturate(100%) invert(64%) sepia(49%) saturate(591%)
-    hue-rotate(285deg) brightness(95%) contrast(90%);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .resultsCard {
-    flex: 0 1 200px;
-    height: auto; /* auto height for smaller screens */
-  }
-
-  .avatarSection {
-    height: 120px;
-  }
-}
-
-/* Adjust spacing if needed */
-.address,
-.Avail {
-  display: flex;
-  align-items: center;
-  gap: 6px; /* space between icon and text */
-  font-size: 0.85rem;
-  color: #ccc; /* fallback text color */
-}
-.moreSkills {
-  background-color: #3a3a3a;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  color: #ac99ea; /* make it pop with accent color */
-}
-/* Modal backdrop */
+/* Modal Styles */
 .modalBackdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-/* Modal box */
 .modal {
   background-color: #121212;
   color: white;
@@ -563,15 +618,13 @@
   text-align: center;
 }
 
-/* Modal error message */
 .errorText {
   margin-bottom: 20px;
   font-size: 1rem;
   font-weight: 500;
-  color: #ff6b6b; /* red-ish for errors */
+  color: #ff6b6b;
 }
 
-/* Modal close button */
 .modalClose {
   padding: 10px 20px;
   background-color: #ac99ea;
@@ -587,202 +640,116 @@
   background-color: #925fc4;
 }
 
-/* Fit vertically on smaller laptops without scrollbar */
-@media (max-height: 900px) {
-  .modal {
-    padding: 15px 20px;
-    max-width: 90%;
+/* ===================== RESPONSIVE DESIGN ===================== */
+
+@media (max-width: 968px) {
+  .searchContainer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
   }
 
-  .errorText {
-    font-size: 0.95rem;
-    margin-bottom: 15px;
+  .heroSearchBar {
+    max-width: none;
+    order: 1; /* Search bar first */
   }
 
-  .modalClose {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-  }
-}
-/* Search Suggestions Dropdown */
-.suggestionsList {
-  position: absolute;
-  top: calc(100% + 2px); /* Small gap from search bar */
-  left: 10%;
-  right: 10%;
-  width: 80%; /* Make it smaller than the search bar */
-  background-color: #121212;
-  border: 2px solid #ac99ea;
-  border-radius: 8px;
-  max-height: 120px; /* Much smaller height */
-  overflow-y: auto;
-  z-index: 1001;
-  list-style: none;
-  padding: 4px 0; /* Reduced padding */
-  margin: 0;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(172, 153, 234, 0.3);
-  backdrop-filter: blur(10px);
-  animation: slideDown 0.2s ease-out;
-}
-
-/* Slide down animation */
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .categorySection {
+    justify-content: flex-end; /* Keep right-aligned even in column layout */
+    gap: 12px;
+    order: 2; /* Categories second */
+    margin-left: 0; /* Reset margin for mobile */
   }
 }
 
-/* Individual suggestion items */
-.suggestionsList li {
-  padding: 8px 16px; /* Smaller padding */
-  color: #ccc;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  border-bottom: 1px solid rgba(172, 153, 234, 0.1);
-  font-size: 0.85rem; /* Smaller font */
-  font-weight: 500;
-  position: relative;
-  overflow: hidden;
-}
-
-.suggestionsList li:last-child {
-  border-bottom: none;
-}
-
-/* Hover effect with gradient background */
-.suggestionsList li:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(172, 153, 234, 0.15),
-    rgba(230, 102, 204, 0.08),
-    rgba(83, 206, 218, 0.08)
-  );
-  color: white;
-  padding-left: 20px; /* Adjusted for smaller size */
-  font-weight: 600;
-  transform: translateX(2px); /* Smaller transform */
-}
-
-/* Active/Focus state for keyboard navigation */
-.suggestionsList li:focus,
-.suggestionsList li.active {
-  background: linear-gradient(
-    135deg,
-    rgba(172, 153, 234, 0.2),
-    rgba(230, 102, 204, 0.1),
-    rgba(83, 206, 218, 0.1)
-  );
-  color: white;
-  outline: none;
-  padding-left: 20px; /* Adjusted for smaller size */
-}
-
-/* Custom scrollbar */
-.suggestionsList::-webkit-scrollbar {
-  width: 6px;
-}
-
-.suggestionsList::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-}
-
-.suggestionsList::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #ac99ea, #e666cc);
-  border-radius: 3px;
-  transition: background 0.3s;
-}
-
-.suggestionsList::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #925fc4, #d442b8);
-}
-
-/* Empty state for suggestions */
-.suggestionsEmpty {
-  padding: 12px 16px;
-  color: #888;
-  font-style: italic;
-  text-align: center;
-  font-size: 0.8rem;
-}
-
-/* Loading state for suggestions */
-.suggestionsLoading {
-  padding: 12px 16px;
-  color: #ac99ea;
-  text-align: center;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.suggestionsLoading::before {
-  content: "";
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(172, 153, 234, 0.3);
-  border-top: 2px solid #ac99ea;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Ensure parent container has relative positioning */
-.heroSearchBar {
-  position: relative;
-}
-
-/* Responsive design */
 @media (max-width: 768px) {
-  .suggestionsList {
-    left: 5%;
-    right: 5%;
-    width: 90%; /* Slightly wider on mobile but still smaller than search bar */
-    max-height: 100px; /* Even smaller on mobile */
-    border-radius: 6px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4),
-      0 0 15px rgba(172, 153, 234, 0.25);
+  .exploreContainer {
+    padding: 16px 12px;
   }
 
-  .suggestionsList li {
-    padding: 6px 12px;
-    font-size: 0.8rem;
+  .topSection {
+    padding: 20px 0;
+    margin-bottom: 24px;
   }
 
-  .suggestionsList li:hover {
-    padding-left: 16px;
+  .categorySection {
+    flex-direction: row; /* Keep horizontal on tablets */
+    justify-content: space-between; /* Spread them out */
+    gap: 12px;
+  }
+
+  .dropdown {
+    flex: 1; /* Equal width on mobile */
+    max-width: none;
+    min-width: unset;
+  }
+
+  .dropdownButton {
+    width: 100%;
+    min-width: unset;
+    justify-content: space-between;
+  }
+
+  .resultContainer {
+    grid-template-columns: 1fr;
+    gap: 32px 20px;
+    padding: 0;
+  }
+
+  .suggestionContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .suggestionContainer h3 {
+    margin-bottom: 4px;
   }
 }
 
 @media (max-width: 480px) {
-  .suggestionsList {
-    left: 0;
-    right: 0;
-    width: 100%; /* Full width only on very small screens */
-    max-height: 90px; /* Very compact on small screens */
+  .topSection {
+    padding: 16px 0;
   }
 
-  .suggestionsList li {
-    padding: 5px 10px;
-    font-size: 0.75rem;
+  .searchContainer {
+    gap: 14px;
   }
 
-  .suggestionsList li:hover {
-    padding-left: 14px;
+  .categorySection {
+    flex-direction: column; /* Stack vertically only on very small screens */
+    align-items: stretch;
+    gap: 12px;
   }
+
+  .dropdownButton {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .suggestionItems {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .formInput {
+    padding: 12px 48px 12px 16px;
+  }
+
+  .searchBtn {
+    width: 40px;
+  }
+}
+.nameWithTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.jobTitle {
+  margin-left: auto; /* pushes it to the right */
+  margin-right: 4px;
+  margin-top: 3px;
+  font-size: 0.9rem;
+  color: #e666cc;
+  font-weight: 500;
 }

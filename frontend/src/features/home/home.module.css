@@ -79,8 +79,8 @@
 
 .searchBtn {
   position: absolute;
-  top: 32%;
-  right: 2px;
+  top: 43%;
+  right: 2.6px;
   transform: translateY(-56%);
   height: calc(100% - 5px);
   width: 39px;

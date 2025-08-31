@@ -56,7 +56,7 @@ body {
   background-color: #121212;
   padding: 20px 25px;
   border-radius: 8px;
-  box-shadow: 0 0 10px #ac99ea;
+  /* box-shadow: 0 0 10px #ac99ea; */
   width: 100%;
   max-width: 380px;
   box-sizing: border-box;
@@ -108,24 +108,25 @@ body {
 
 .form_input:focus + label,
 .form_input:not(:placeholder-shown) + label {
-  top: -16px;
+  top: -13px;
   left: 8px;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: #ac99ea;
 }
 
 button {
   width: 100%;
-  padding: 10px;
-  margin-top: 8px;
+  padding: 12px; /* Change from 10px to 12px */
+  margin-top: 5px; /* Change from 8px to 5px */
   background-color: #ac99ea;
   color: #1f1f1f;
   border: none;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem; /* Change from 0.9rem to 1rem */
   cursor: pointer;
   transition: background-color 0.3s;
+  box-sizing: border-box; /* Add this */
 }
 
 button:hover {
@@ -135,12 +136,12 @@ button:hover {
 .login-container a,
 .signup-link {
   display: block;
-  margin-top: 8px;
+  margin-top: 13px;
   color: #ac99ea;
   text-align: center;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   cursor: pointer;
 }
 
@@ -150,15 +151,14 @@ button:hover {
 }
 
 .error-message {
-  color: #e74c3c;
-  background-color: #33000022;
-  padding: 4px 8px;
-  margin-top: 4px;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  box-shadow: 0 0 6px #e74c3c88;
+  color: #780606; /* softer red */
+  background-color: transparent; /* remove block background */
+  padding: 0; /* no padding */
+  margin-top: 2px; /* close to input */
+  margin-bottom: 4px; /* small gap */
+  font-size: 0.7rem; /* smaller and subtle */
+  font-weight: 500; /* lighter than bold */
+  line-height: 1.2;
 }
 
 /* Responsive adjustments */
@@ -223,4 +223,23 @@ button:hover {
     font-size: 0.75rem;
     padding: 3px 6px;
   }
+}
+
+.register-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  background-color: #ac99ea;
+  color: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: none; /* Remove transition */
+  box-sizing: border-box;
+}
+
+.register-button:hover {
+  background-color: #ac99ea; /* Keep same color on hover */
 }

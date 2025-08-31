@@ -5,11 +5,18 @@ import {
   searchProfiles,
   searchByAvailability,
   getTopProfiles,
+  suggestProfilesAPI,
 } from "../../shared/config/api";
 import { Navbar } from "../../components/ui/navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import { Footer } from "../../components/ui/footer/Footer";
 import { useNavigate } from "react-router-dom";
+interface Experience {
+  title: string;
+  company?: string;
+  startYear: string;
+  endYear: string;
+}
 interface Profile {
   _id: string;
   avatar?: string;
@@ -26,6 +33,7 @@ interface Profile {
     username: string;
     fullname?: string;
   };
+  experience?: Experience[];
 }
 
 export const Explore = () => {
@@ -69,8 +77,9 @@ export const Explore = () => {
   const [error, setErrormessage] = useState("");
   const [searchPerformed, setSearchPerformed] = useState(false);
 
-  const [suggestions, setSuggestions] = useState<Profile[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [debouncedQuery, setDebouncedQuery] = useState("");
 
   //for fetching data acc to the home page's structure
   useEffect(() => {
@@ -134,10 +143,33 @@ export const Explore = () => {
   }, []);
 
   //to handle the saerch  from the input
-  const handleSearch = async () => {
-    if (!query.trim()) return;
+  // const handleSearch = async () => {
+  //   if (!query.trim()) return;
+  //   try {
+  //     const data = await searchProfiles(query);
+  //     setResults(data);
+  //     setNoResults(data.length === 0);
+  //     setErrormessage("");
+  //     setSearchPerformed(true);
+
+  //     setSelectCat("");
+  //     setSelectedAvail(null);
+  //     setQuery("");
+  //   } catch (err) {
+  //     const error = err as { message: string };
+
+  //     setResults([]);
+  //     setErrormessage(error.message);
+  //   }
+  // };
+  const handleSearch = async (
+    event?: React.MouseEvent<HTMLButtonElement> | string
+  ) => {
+    const q = typeof event === "string" ? event : query; // if string, use it, else use state
+    if (!q.trim()) return;
+
     try {
-      const data = await searchProfiles(query);
+      const data = await searchProfiles(q);
       setResults(data);
       setNoResults(data.length === 0);
       setErrormessage("");
@@ -148,7 +180,6 @@ export const Explore = () => {
       setQuery("");
     } catch (err) {
       const error = err as { message: string };
-
       setResults([]);
       setErrormessage(error.message);
     }
@@ -202,29 +233,43 @@ export const Explore = () => {
     setSelectCat("");
   };
 
-  //autocomplete feature // To fetch suggestions as user types
-  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300); // 300ms delay
 
-    if (!value.trim()) {
+    return () => clearTimeout(handler);
+  }, [query]);
+
+  // Fetch suggestions whenever debouncedQuery changes
+  useEffect(() => {
+    if (!debouncedQuery.trim() || debouncedQuery.trim().length < 3) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
     }
 
-    try {
-      // Call your backend API with query `q`
-      const data = await searchProfiles(value);
-      setSuggestions(data);
-      setShowSuggestions(true);
-    } catch (err) {
-      console.error(err);
-      setSuggestions([]);
-      setShowSuggestions(false);
-    }
-  };
+    const fetchSuggestions = async () => {
+      try {
+        // pass the JWT token if your backend needs authentication
+        // const token = localStorage.getItem("token") || "";
+        const data = await suggestProfilesAPI(debouncedQuery);
+        setSuggestions(data);
+        setShowSuggestions(true);
+      } catch (err) {
+        console.error(err);
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    };
 
+    fetchSuggestions();
+  }, [debouncedQuery]);
+
+  //autocomplete feature // To fetch suggestions as user types
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value); // only update the query, debouncedQuery handles API call
+  };
   return (
     <>
       <Navbar></Navbar>
@@ -232,7 +277,7 @@ export const Explore = () => {
         <section className={styles.topSection}>
           {/* Search Bar */}
           <div className={styles.searchContainer}>
-            <h1>Search Pros</h1>
+            <h1>Search here</h1>
             <div className={styles.heroSearchBar}>
               <div className={styles.inputWithButton}>
                 <input
@@ -257,30 +302,78 @@ export const Explore = () => {
               </div>
               {showSuggestions && suggestions.length > 0 && (
                 <ul className={styles.suggestionsList}>
-                  {suggestions.map((profile) => (
+                  {suggestions.map((s, idx) => (
                     <li
-                      key={profile._id}
+                      key={idx}
                       onClick={() => {
-                        setQuery(profile.userId.username); // set input to clicked suggestion
-                        setShowSuggestions(false);
-                        handleSearch(); // optionally trigger search on click
+                        setQuery(s); // set input to clicked suggestion
+                        setShowSuggestions(false); // hide dropdown
+                        handleSearch(); // trigger search with the selected keyword
                       }}
+                      className={styles.suggestionItem} // optional: add hover styling
                     >
-                      {profile.userId.username}
+                      {s}
                     </li>
                   ))}
                 </ul>
               )}
             </div>
+            {/* Category Dropdown */}
+            <div className={styles.categorySection}>
+              <div ref={categoryRef} className={styles.dropdown}>
+                <button
+                  className={styles.dropdownButton}
+                  onClick={() => setDropDownOpen(!dropdownOpen)}
+                >
+                  {selectedCat || "Select Category"}
+                </button>
+                {dropdownOpen && (
+                  <ul className={styles.dropdownMenu}>
+                    {dropDownCategories.map((cat) => (
+                      <li key={cat} onClick={() => handleSelect(cat)}>
+                        {cat}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div
+                ref={availabilityRef}
+                className={styles.dropdown}
+                style={{ marginLeft: "10px" }}
+              >
+                <button
+                  className={styles.dropdownButton}
+                  onClick={() => setDropdownAvailOpen(!dropdownAvailOpen)}
+                >
+                  {selectedAvail
+                    ? `≤ ${selectedAvail} days`
+                    : "Select Availability"}{" "}
+                </button>
+                {dropdownAvailOpen && (
+                  <ul className={styles.dropdownMenu}>
+                    {availabilityOptions.map((opt) => (
+                      <li
+                        key={opt.value}
+                        onClick={() => handleSelectAvailability(opt.value)}
+                      >
+                        {opt.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Suggestions */}
           <div className={styles.suggestionContainer}>
-            <h3>Suggestions</h3>
+            <h3>Trending</h3>
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("javascript");
+                handleSearch("javascript");
               }}
             >
               JavaScript
@@ -288,15 +381,15 @@ export const Explore = () => {
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("spotify web design");
+                handleSearch("web design");
               }}
             >
-              Spotify Web Design
+              Web Design
             </span>
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("cloud");
+                handleSearch("cloud");
               }}
             >
               Cloud
@@ -304,7 +397,7 @@ export const Explore = () => {
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("devops");
+                handleSearch("devops");
               }}
             >
               DevOps
@@ -312,7 +405,7 @@ export const Explore = () => {
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("ui/ux");
+                handleSearch("ui/ux");
               }}
             >
               UI/UX
@@ -320,7 +413,7 @@ export const Explore = () => {
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("frontend");
+                handleSearch("frontend");
               }}
             >
               Frontend
@@ -328,59 +421,11 @@ export const Explore = () => {
             <span
               className={styles.suggestionItems}
               onClick={() => {
-                setQuery("backend");
+                handleSearch("backend");
               }}
             >
               Backend
             </span>
-          </div>
-
-          {/* Category Dropdown */}
-          <div className={styles.categorySection}>
-            <div ref={categoryRef} className={styles.dropdown}>
-              <button
-                className={styles.dropdownButton}
-                onClick={() => setDropDownOpen(!dropdownOpen)}
-              >
-                {selectedCat || "Select Category"}
-              </button>
-              {dropdownOpen && (
-                <ul className={styles.dropdownMenu}>
-                  {dropDownCategories.map((cat) => (
-                    <li key={cat} onClick={() => handleSelect(cat)}>
-                      {cat}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            <div
-              ref={availabilityRef}
-              className={styles.dropdown}
-              style={{ marginLeft: "10px" }}
-            >
-              <button
-                className={styles.dropdownButton}
-                onClick={() => setDropdownAvailOpen(!dropdownAvailOpen)}
-              >
-                {selectedAvail
-                  ? `≤ ${selectedAvail} days`
-                  : "Select Availability"}{" "}
-              </button>
-              {dropdownAvailOpen && (
-                <ul className={styles.dropdownMenu}>
-                  {availabilityOptions.map((opt) => (
-                    <li
-                      key={opt.value}
-                      onClick={() => handleSelectAvailability(opt.value)}
-                    >
-                      {opt.label}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
           </div>
 
           <div className={styles.resultCounter}>
@@ -390,7 +435,8 @@ export const Explore = () => {
               ) : (
                 <p>
                   {results.length}{" "}
-                  {results.length === 1 ? "profile" : "profiles"} found
+                  {results.length === 1 ? "profile" : "profiles"} found for your
+                  search
                 </p>
               ))}
           </div>
@@ -400,15 +446,33 @@ export const Explore = () => {
         <section className={styles.bottomSection}>
           <div className={styles.resultContainer}>
             {results.map((profile) => (
-              <div className={styles.resultsCard} key={profile._id}>
+              <div
+                className={styles.resultsCard}
+                key={profile._id}
+                onClick={() => navigate(`/getprofile/${profile.userId._id}`)}
+              >
                 <div className={styles.avatarSection}>
                   <img src={profile.avatar} alt="profile avatar" />
                 </div>
 
                 <div className={styles.detailsSection}>
-                  <h2 className={styles.detailName}>
-                    {profile.userId.username}
-                  </h2>
+                  <div className={styles.nameWithTitle}>
+                    <h2 className={styles.detailName}>
+                      {profile.userId.fullname}
+                    </h2>
+                    {profile.experience && profile.experience.length > 0 && (
+                      <span className={styles.jobTitle}>
+                        {profile.experience[profile.experience.length - 1]
+                          .endYear === "Present"
+                          ? `${
+                              profile.experience[profile.experience.length - 1]
+                                .title
+                            }`
+                          : profile.experience[profile.experience.length - 1]
+                              .title}
+                      </span>
+                    )}
+                  </div>
 
                   <div className={styles.addressAvailContainer}>
                     {profile.location && (
@@ -420,23 +484,23 @@ export const Explore = () => {
                     {profile.availability && (
                       <span className={styles.Avail}>
                         <img src="/src/assets/calendar.png"></img>
-                        <p>
+                        <p style={{ textAlign: "right" }}>
                           {" "}
-                          {profile.availability.filter(Boolean).length} days a
-                          week
+                          {profile.availability.filter(Boolean).length}{" "}
+                          days/week
                         </p>
                       </span>
                     )}
                   </div>
                   {profile.bio && (
                     <p className={styles.profileBio}>
-                      {profile.bio.split(" ").slice(0, 3).join(" ") +
+                      {profile.bio.split(" ").slice(0, 15).join(" ") +
                         (profile.bio.split(" ").length > 6 ? "..." : "")}
                     </p>
                   )}
 
                   <div className={styles.skillContainer}>
-                    {profile.skills.slice(0, 4).map((skill) => (
+                    {profile.skills.slice(0, 6).map((skill) => (
                       <span key={skill}>{skill}</span>
                     ))}
                     {profile.skills.length > 4 && (
@@ -455,14 +519,14 @@ export const Explore = () => {
                     )} */}
                   </div>
 
-                  <button
+                  {/* <button
                     className={styles.viewProfile}
                     onClick={() =>
                       navigate(`/getprofile/${profile.userId._id}`)
                     }
                   >
                     View Profile
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}

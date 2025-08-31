@@ -3,6 +3,7 @@ import { getProfile } from "../../shared/config/api";
 import "./profile.css";
 import { ProfessionalNavbar } from "../../components/ui/navbar/ProNavbar";
 import { Footer } from "../../components/ui/footer/Footer";
+
 type Contact = {
   email?: string;
   github?: string;
@@ -63,8 +64,8 @@ export const Profile = () => {
     fetchProfile();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (!profile) return <div>No profile found</div>;
+  if (loading) return <div className="loading-container">Loading...</div>;
+  if (!profile) return <div className="error-container">No profile found</div>;
 
   return (
     <>
@@ -83,23 +84,38 @@ export const Profile = () => {
                   )}
                 </div>
                 <h1 className="profile-name">{profile.userId.fullname}</h1>
-
-                {profile.location && (
-                  <h2 className="profile-address">{profile.location}</h2>
+                {profile.experience && profile.experience.length > 0 && (
+                  <span className="latest-job-title">
+                    {profile.experience[profile.experience.length - 1].title}
+                  </span>
                 )}
+                {profile.location && (
+                  <div className="profile-address">{profile.location}</div>
+                )}
+
                 {/* Bio */}
                 {profile.bio && (
                   <div className="bio-section">
-                    {/* <h3>Bio</h3> */}
                     <p className="bio-content">{profile.bio}</p>
                   </div>
                 )}
-                {/* ✏️ Edit Profile Button */}
+                <div className="skills-section">
+                  {/* <h3>Skills</h3> */}
+                  <div className="skill-collection">
+                    {profile.skills.map((skill, idx) => (
+                      <span key={idx} className="skill-tag">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                {/* Update/Edit Button */}
                 <button
                   className="edit-btn"
                   onClick={() => (window.location.href = "/profileEdit")}
+                  style={{ margin: "15px" }}
                 >
-                  Edit Profile
+                  Update Profile
                 </button>
               </div>
 
@@ -119,16 +135,6 @@ export const Profile = () => {
               </div>
 
               {/* Skills */}
-              <div className="skills-section">
-                <h3>Skills</h3>
-                <div className="skill-collection">
-                  {profile.skills.map((skill, idx) => (
-                    <span key={idx} className="skill-tag">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
 
@@ -144,7 +150,9 @@ export const Profile = () => {
                     <p className="item-subtitle">
                       {exp.company} • {exp.startYear}-{exp.endYear || "Present"}
                     </p>
-                    <p className="item-description">{exp.description}</p>
+                    {exp.description && (
+                      <p className="item-description">{exp.description}</p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -167,24 +175,21 @@ export const Profile = () => {
               </div>
             )}
 
-            {/* Contact Info below Qualifications */}
+            {/* Contact Info */}
             <div className="profile-card contact-section">
               <h2>Contact</h2>
               {profile.contact?.email && (
                 <div className="contact-item">
-                  <span className="contact-icon"></span>
                   <span className="contact-text">{profile.contact.email}</span>
                 </div>
               )}
               {profile.contact?.github && (
                 <div className="contact-item">
-                  <span className="contact-icon"></span>
                   <span className="contact-text">{profile.contact.github}</span>
                 </div>
               )}
               {profile.contact?.linkedin && (
                 <div className="contact-item">
-                  <span className="contact-icon">-</span>
                   <span className="contact-text">
                     {profile.contact.linkedin}
                   </span>

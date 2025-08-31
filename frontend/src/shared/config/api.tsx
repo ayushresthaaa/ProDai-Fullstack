@@ -285,4 +285,17 @@ export const getUserCredentials = async (): Promise<UserCredentials> => {
     throw error.response?.data || { message: "Network error" };
   }
 };
+
+export const suggestProfilesAPI = async (query: string) => {
+  try {
+    const response = await api.get(
+      `/search/suggest?q=${encodeURIComponent(query)}`
+    );
+    return response.data; // array of profiles
+  } catch (err: unknown) {
+    const error = err as AxiosError<{ message: string }>;
+    if (error.response && error.response.data) throw error.response.data;
+    throw { message: "Network error" };
+  }
+};
 export default api;

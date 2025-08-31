@@ -1,4 +1,5 @@
-/* Footer */
+/* ===================== FOOTER STYLES - FIXED ALIGNMENT ===================== */
+
 .footer {
   background-color: #1a1a1a;
   color: #ccc;
@@ -10,10 +11,17 @@
 
 .footerContent {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between; /* Better for equal spacing */
   flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 90px;
+  margin: 0 auto 20px auto; /* Center the footer content */
+  max-width: 800px; /* Control overall width for better alignment */
+}
+
+.footerColumn {
+  flex: 1; /* Equal width columns */
+  text-align: center; /* Center content in each column */
+  min-width: 200px; /* Minimum width for mobile */
 }
 
 .footerColumn h3 {
@@ -43,4 +51,46 @@
 
 .footerColumn a:hover {
   color: #ac99ea; /* optional: hover color to match headers */
+}
+
+/* ===================== RESPONSIVE FOOTER ===================== */
+
+@media (max-width: 768px) {
+  .footerContent {
+    flex-direction: column; /* Stack columns vertically on mobile */
+    align-items: center;
+    gap: 30px;
+  }
+
+  .footerColumn {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .footer {
+    padding: 30px 15px 20px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 25px 10px 15px 10px;
+  }
+
+  .footerContent {
+    gap: 25px;
+  }
+
+  .footerColumn h3 {
+    font-size: 1rem;
+  }
+
+  .footerColumn p,
+  .footerColumn a {
+    font-size: 0.85rem;
+  }
+
+  .footerBottom {
+    font-size: 0.75rem;
+  }
 }

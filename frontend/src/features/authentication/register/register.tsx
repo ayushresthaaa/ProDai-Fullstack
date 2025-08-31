@@ -25,7 +25,7 @@ const validSchema = yup
       .max(30, "Username cannot exceed 30 characters"),
     fullname: yup
       .string()
-      .trim() // remove spaces
+      .trim()
       .required("Full name is required")
       .max(60, "Full name cannot exceed 60 characters"),
     usertype: yup.string().required("Select user type"),
@@ -55,7 +55,6 @@ const validSchema = yup
 
 export const Register = () => {
   const navigate = useNavigate();
-
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -64,6 +63,7 @@ export const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validSchema) });
+
   const onsubmit = async (data: RegisterFormData) => {
     try {
       const res = await registerUser(data);
@@ -86,6 +86,7 @@ export const Register = () => {
       <div className="left-container">
         <img src="/src/assets/register.svg" />
       </div>
+
       <div className="right-container">
         <form className="login-container" onSubmit={handleSubmit(onsubmit)}>
           <h1>Create Your Account</h1>
@@ -98,10 +99,9 @@ export const Register = () => {
               placeholder=" "
               className="form_input"
             />
-            <label>Username</label>
-            {errors.username && (
-              <p className="error-message">{errors.username.message}</p>
-            )}
+            <label style={{ color: errors.username ? "#e74c3c" : "#999" }}>
+              {errors.username ? errors.username.message : "Username"}
+            </label>
           </div>
 
           {/* Full Name */}
@@ -112,10 +112,9 @@ export const Register = () => {
               placeholder=" "
               className="form_input"
             />
-            <label>Full Name</label>
-            {errors.fullname && (
-              <p className="error-message">{errors.fullname.message}</p>
-            )}
+            <label style={{ color: errors.fullname ? "#e74c3c" : "#999" }}>
+              {errors.fullname ? errors.fullname.message : "Full Name"}
+            </label>
           </div>
 
           {/* User Type */}
@@ -124,6 +123,7 @@ export const Register = () => {
               {...register("usertype")}
               className="form_input"
               defaultValue=""
+              style={{ color: errors.usertype ? "#e74c3c" : "#fff" }}
             >
               <option value="" disabled>
                 Select user type
@@ -132,7 +132,9 @@ export const Register = () => {
               <option value="professional">Professional</option>
             </select>
             {errors.usertype && (
-              <p className="error-message">{errors.usertype.message}</p>
+              <label style={{ color: "#e74c3c" }}>
+                {errors.usertype.message}
+              </label>
             )}
           </div>
 
@@ -144,10 +146,9 @@ export const Register = () => {
               placeholder=" "
               className="form_input"
             />
-            <label>Email</label>
-            {errors.email_address && (
-              <p className="error-message">{errors.email_address.message}</p>
-            )}
+            <label style={{ color: errors.email_address ? "#e74c3c" : "#999" }}>
+              {errors.email_address ? errors.email_address.message : "Email"}
+            </label>
           </div>
 
           {/* Password */}
@@ -158,10 +159,9 @@ export const Register = () => {
               placeholder=" "
               className="form_input"
             />
-            <label>Password</label>
-            {errors.password && (
-              <p className="error-message">{errors.password.message}</p>
-            )}
+            <label style={{ color: errors.password ? "#e74c3c" : "#999" }}>
+              {errors.password ? errors.password.message : "Password"}
+            </label>
           </div>
 
           {/* Confirm Password */}
@@ -172,18 +172,30 @@ export const Register = () => {
               placeholder=" "
               className="form_input"
             />
-            <label>Confirm Password</label>
-            {errors.confirmPassword && (
-              <p className="error-message">{errors.confirmPassword.message}</p>
-            )}
+            <label
+              style={{ color: errors.confirmPassword ? "#e74c3c" : "#999" }}
+            >
+              {errors.confirmPassword
+                ? errors.confirmPassword.message
+                : "Confirm Password"}
+            </label>
           </div>
 
-          <button type="submit">Register</button>
-          <span className="signup-link" onClick={() => navigate("/")}>
-            Already have an account? Login here
+          {/* Register Button */}
+          <button type="submit" className="register-button">
+            Register
+          </button>
+
+          {/* Login link */}
+          <span className="signup-text">
+            Already have an Account?{" "}
+            <span className="signup-link" onClick={() => navigate("/")}>
+              Login here
+            </span>
           </span>
         </form>
       </div>
+
       {(successMessage || errorMessage) && (
         <div className="modal-backdrop">
           <div className="modal">

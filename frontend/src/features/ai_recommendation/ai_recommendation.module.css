@@ -1,153 +1,372 @@
-/* Container */
+/* ===================== AI RECOMMENDATION STYLES - CONSISTENT WITH VIEW PROFILE ===================== */
+
+/* Base Container - Matching ViewProfile's professional layout */
 .container {
-  position: relative;
-  max-width: 800px;
-  margin: 40px auto;
-  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: white;
   background-color: #1f1f1f;
+  min-height: calc(100vh - 160px); /* Account for navbar/footer */
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  border-radius: 12px;
+  align-items: center;
+  gap: 32px;
 }
 
-/* Lottie Animation Wrapper */
+/* ===================== LOTTIE ANIMATION WRAPPER ===================== */
+
 .animationWrapper {
   width: 100%;
-  height: 200px;
-  margin-bottom: 20px;
+  max-width: 400px;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(24, 24, 24, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Generate Button */
+.animationWrapper:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ===================== GENERATE BUTTON - SIMPLE CONSISTENT STYLING ===================== */
+
 .generateButton {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  margin-top: 5px;
   background-color: #ac99ea;
   color: #1f1f1f;
   border: none;
-  border-radius: 8px;
-  padding: 12px 20px;
-  font-size: 1rem;
+  border-radius: 6px;
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s;
-  align-self: center;
+  transition: background-color 0.3s;
+  box-sizing: border-box;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
 }
 
 .generateButton:hover {
   background-color: #925fc4;
 }
 
-/* Recommendation Card */
+.generateButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.generateButton:disabled:hover {
+  background-color: #ac99ea;
+}
+
+/* ===================== RECOMMENDATION CARD - CONSISTENT WITH PROFILE CARDS ===================== */
+
 .recommendationCard {
-  background-color: #121212;
-  border-radius: 10px;
-  padding: 20px;
-  border: 2px solid #9780e5;
-  box-shadow: 0 0 8px rgba(172, 153, 234, 0.2);
+  background: rgba(24, 24, 24, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  max-width: 800px;
   position: relative;
-  transition: all 0.3s;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
 }
 
 .recommendationCard:hover {
-  box-shadow: 0 0 15px rgba(172, 153, 234, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
 }
 
-/* Close Button */
+/* Close Button - Professional styling */
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  background: none;
-  border: none;
-  color: #ccc;
-  font-size: 1.5rem;
+  top: 16px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: color 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  line-height: 1;
 }
 
 .closeButton:hover {
-  color: #ac99ea;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
 }
 
-/* Title */
+.closeButton:active {
+  transform: scale(0.95);
+}
+
+/* Card Content Typography */
 .recommendationCard h3 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 24px 0;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   text-align: center;
-  margin-bottom: 15px;
-  background: linear-gradient(135deg, #ac99ea, #e666cc, #53ceda);
-  -webkit-background-clip: text;
-  color: transparent;
 }
 
-/* Current Skills */
 .recommendationCard p {
-  text-align: center;
-  color: #ccc;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
-/* Recommendation List */
+.recommendationCard p strong {
+  color: #ac99ea;
+  font-weight: 600;
+}
+
+/* Recommendations List - Professional styling */
 .recommendationCard ul {
   list-style: none;
   padding: 0;
+  margin: 0 0 24px 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* Recommendation Item */
 .recommendationCard li {
-  background-color: #2f2f2f;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 1px solid #666;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 16px 20px;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.9rem;
-  transition: all 0.3s;
+  line-height: 1.6;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.recommendationCard li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #ac99ea;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .recommendationCard li:hover {
-  background-color: #ac99ea;
-  color: #1f1f1f;
-  border-color: #ac99ea;
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateX(4px);
+  color: rgba(255, 255, 255, 0.95);
 }
 
-/* Error Message */
-.error {
-  color: #ff4c4c;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 10px;
+.recommendationCard li:hover::before {
+  opacity: 1;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-
-  .animationWrapper {
-    height: 150px;
-  }
-
-  .generateButton {
-    width: 100%;
-  }
-}
+/* Back Link - Consistent with navigation elements */
 .backLink {
-  display: inline-block;
-  position: absolute;
-  bottom: 10px;
-  right: 30px;
-  color: #ac99ea;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(172, 153, 234, 0.8);
   text-decoration: none;
-  font-weight: 600;
   font-size: 0.9rem;
-  transition: color 0.3s;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px 0;
+  margin-top: 8px;
 }
 
 .backLink:hover {
-  color: #53ceda;
+  color: #ac99ea;
+  transform: translateX(-2px);
+  text-decoration: none;
+}
+
+/* ===================== ERROR STATE - CONSISTENT STYLING ===================== */
+
+.error {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 12px;
+  padding: 20px 24px;
+  color: #fca5a5;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+  letter-spacing: 0.01em;
+}
+
+.error::before {
+  content: "⚠️";
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* ===================== RESPONSIVE DESIGN - MOBILE FIRST ===================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 24px 16px;
+    gap: 24px;
+  }
+
+  .animationWrapper {
+    max-width: 320px;
+    height: 240px;
+  }
+
+  .recommendationCard {
+    padding: 24px;
+    margin: 0 8px;
+  }
+
+  .recommendationCard h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .generateButton {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+
+  .recommendationCard li {
+    padding: 14px 16px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 12px;
+    gap: 20px;
+  }
+
+  .animationWrapper {
+    max-width: 280px;
+    height: 200px;
+  }
+
+  .recommendationCard {
+    padding: 20px;
+    margin: 0 4px;
+  }
+
+  .recommendationCard h3 {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+
+  .generateButton {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+
+  .closeButton {
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
+    top: 12px;
+    right: 16px;
+  }
+
+  .recommendationCard li {
+    padding: 12px 14px;
+    font-size: 0.8rem;
+  }
+
+  .recommendationCard p {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+}
+
+/* ===================== ANIMATIONS ===================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading state animation for button */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.generateButton:disabled {
+  animation: pulse 2s infinite;
+}
+
+/* Staggered animations for better UX */
+.animationWrapper {
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.generateButton {
+  animation-delay: 0.2s;
+}
+
+.recommendationCard {
+  animation-delay: 0.3s;
+}
+
+.error {
+  animation-delay: 0.3s;
 }
