@@ -142,7 +142,7 @@ export const Home = () => {
           <div
             className={`${styles.categoryCard} ${styles.card2}`}
             onClick={() => {
-              handleClick("Mobile Developers");
+              handleClick("mobile apps");
             }}
           >
             <div className={styles.cardHeader}>

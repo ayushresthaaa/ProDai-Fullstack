@@ -1,4 +1,5 @@
 import Profile from "../models/profile/profile.model.js";
+import User from "../models/user.model.js";
 const categoryKeywords = {
   "web design": "figma photoshop illustrator ui ux",
   "web development": "javascript react node angular vue",
@@ -11,82 +12,82 @@ const categoryKeywords = {
 };
 
 // Text-based search controller for the search bar using indexing
-export const searchProfile = async (req, res) => {
-  try {
-    const { q } = req.query;
-    const currentUserId = req.user.id;
+// export const searchProfile = async (req, res) => {
+//   try {
+//     const { q } = req.query;
+//     const currentUserId = req.user.id;
 
-    if (!q || !q.trim()) {
-      return res
-        .status(400)
-        .json({ message: "Please write something to search" });
-    }
+//     if (!q || !q.trim()) {
+//       return res
+//         .status(400)
+//         .json({ message: "Please write something to search" });
+//     }
 
-    const query = q.trim();
-    const lowerQuery = query.toLowerCase();
-    const regex = new RegExp(query, "i");
+//     const query = q.trim();
+//     const lowerQuery = query.toLowerCase();
+//     const regex = new RegExp(query, "i");
 
-    let profiles = [];
+//     let profiles = [];
 
-    // Category search (skills-based)
-    if (categoryKeywords[lowerQuery]) {
-      const skills = categoryKeywords[lowerQuery].split(" ");
-      profiles = await Profile.find({
-        skills: { $in: skills.map((s) => new RegExp(`^${s}$`, "i")) },
-      })
-        .populate({
-          path: "userId",
-          match: { usertype: "professional" },
-          select: "username fullname email",
-        })
-        .sort({ createdAt: -1 });
-    } else {
-      // General search on Profile fields
-      profiles = await Profile.find({
-        $or: [
-          { bio: regex },
-          { skills: regex },
-          { location: regex },
-          { "experience.title": regex },
-          { "experience.company": regex },
-        ],
-      })
-        .populate({
-          path: "userId",
-          match: { usertype: "professional" },
-          select: "username fullname email",
-        })
-        .sort({ createdAt: -1 });
-    }
+//     // Category search (skills-based)
+//     if (categoryKeywords[lowerQuery]) {
+//       const skills = categoryKeywords[lowerQuery].split(" ");
+//       profiles = await Profile.find({
+//         skills: { $in: skills.map((s) => new RegExp(`^${s}$`, "i")) },
+//       })
+//         .populate({
+//           path: "userId",
+//           match: { usertype: "professional" },
+//           select: "username fullname email",
+//         })
+//         .sort({ createdAt: -1 });
+//     } else {
+//       // General search on Profile fields
+//       profiles = await Profile.find({
+//         $or: [
+//           { bio: regex },
+//           { skills: regex },
+//           { location: regex },
+//           { "experience.title": regex },
+//           { "experience.company": regex },
+//         ],
+//       })
+//         .populate({
+//           path: "userId",
+//           match: { usertype: "professional" },
+//           select: "username fullname email",
+//         })
+//         .sort({ createdAt: -1 });
+//     }
 
-    // Filter results to include only matches and exclude current user
-    const filteredProfiles = profiles.filter((p) => {
-      if (!p.userId || p.userId._id.toString() === currentUserId) return false;
+//     // Filter results to include only matches and exclude current user
+//     const filteredProfiles = profiles.filter((p) => {
+//       if (!p.userId || p.userId._id.toString() === currentUserId) return false;
 
-      if (categoryKeywords[lowerQuery]) return true; // keep all category matches
+//       if (categoryKeywords[lowerQuery]) return true; // keep all category matches
 
-      // Check Profile + User fields for regex match
-      return (
-        regex.test(p.userId.fullname) ||
-        regex.test(p.userId.username) ||
-        regex.test(p.bio || "") ||
-        (Array.isArray(p.skills) && p.skills.some((s) => regex.test(s))) ||
-        regex.test(p.location || "") ||
-        (Array.isArray(p.experience) &&
-          p.experience.some(
-            (exp) =>
-              (exp.title && regex.test(exp.title)) ||
-              (exp.company && regex.test(exp.company))
-          ))
-      );
-    });
+//       // Check Profile + User fields for regex match
+//       return (
+//         regex.test(p.userId.fullname) ||
+//         regex.test(p.userId.username) ||
+//         regex.test(p.bio || "") ||
+//         (Array.isArray(p.skills) && p.skills.some((s) => regex.test(s))) ||
+//         regex.test(p.location || "") ||
+//         (Array.isArray(p.experience) &&
+//           p.experience.some(
+//             (exp) =>
+//               (exp.title && regex.test(exp.title)) ||
+//               (exp.company && regex.test(exp.company))
+//           ))
+//       );
+//     });
 
-    res.json(filteredProfiles);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
-  }
-};
+//     res.json(filteredProfiles);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server error", error: err.message });
+//   }
+// };
 // Keywords for categorical search
 export const categoricalSearch = async (req, res) => {
   try {
@@ -255,5 +256,92 @@ export const suggestProfiles = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: "server error", error: err.message });
+  }
+};
+export const searchProfile = async (req, res) => {
+  try {
+    const { q } = req.query;
+    const currentUserId = req.user.id;
+
+    if (!q || !q.trim()) {
+      return res
+        .status(400)
+        .json({ message: "Please write something to search" });
+    }
+
+    const query = q.trim();
+    const words = query.split(" ");
+
+    let filteredProfiles = [];
+
+    // Indexed search
+    const indexedResults = await Profile.find(
+      { $text: { $search: query } },
+      { score: { $meta: "textScore" } }
+    )
+      .populate({
+        path: "userId",
+        match: { usertype: "professional" },
+        select: "username fullname email",
+      })
+      .sort({ score: { $meta: "textScore" } });
+
+    filteredProfiles = indexedResults.filter(
+      (p) => p.userId && p.userId._id.toString() !== currentUserId
+    );
+
+    // 2 Regex search if no indexed results
+    if (filteredProfiles.length === 0) {
+      const regexes = words.map((w) => new RegExp(w, "i"));
+
+      const regexResults = await Profile.find({
+        $or: [
+          { bio: { $in: regexes } },
+          { skills: { $in: regexes } },
+          { location: { $in: regexes } },
+          { "experience.title": { $in: regexes } },
+          { "experience.company": { $in: regexes } },
+        ],
+      })
+        .populate({
+          path: "userId",
+          match: { usertype: "professional" },
+          select: "username fullname email",
+        })
+        .sort({ createdAt: -1 });
+
+      filteredProfiles = regexResults.filter(
+        (p) => p.userId && p.userId._id.toString() !== currentUserId
+      );
+    }
+
+    //  User fallback if still empty
+    if (filteredProfiles.length === 0) {
+      const userRegex = new RegExp(query, "i");
+      const users = await User.find({
+        $or: [{ username: userRegex }, { fullname: userRegex }],
+        usertype: "professional",
+      });
+
+      if (users.length > 0) {
+        const userIds = users.map((u) => u._id);
+        const profilesFromUsers = await Profile.find({
+          userId: { $in: userIds },
+        }).populate({
+          path: "userId",
+          select: "username fullname email",
+        });
+
+        filteredProfiles = profilesFromUsers.filter(
+          (p) => p.userId && p.userId._id.toString() !== currentUserId
+        );
+      }
+    }
+
+    // Final response
+    res.json(filteredProfiles);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };

@@ -17,35 +17,57 @@ const categoryKeywords = {
 const generateRecommendations = (userSkills = []) => {
   const recs = [];
 
+  // Normalize skills
+  const normalizedSkills = userSkills.map((s) => s.toLowerCase());
+
   // Loop through categories
   for (const [category, keywords] of Object.entries(categoryKeywords)) {
     const keywordList = keywords.split(" ");
-    // If user has at least one skill in this category
-    if (userSkills.some((skill) => keywordList.includes(skill.toLowerCase()))) {
-      // Recommend skills they don't have yet
-      const missingSkills = keywordList.filter(
-        (k) => !userSkills.map((s) => s.toLowerCase()).includes(k)
-      );
-      if (missingSkills.length) {
-        recs.push(
-          `Based on your interest in ${category}, consider learning: ${missingSkills.join(
+    const matchedSkills = normalizedSkills.filter((s) =>
+      keywordList.includes(s)
+    );
+    const missingSkills = keywordList.filter(
+      (k) => !normalizedSkills.includes(k)
+    );
+
+    if (matchedSkills.length) {
+      recs.push(
+        `Since you already have experience with ${matchedSkills.join(", ")}, ` +
+          `you could level up in ${category} by learning: ${missingSkills.join(
             ", "
-          )}`
+          )}.`
+      );
+
+      // Suggest related categories
+      const relatedCategories = Object.entries(categoryKeywords)
+        .filter(
+          ([otherCat, otherKeywords]) =>
+            otherCat !== category &&
+            otherKeywords.split(" ").some((k) => !normalizedSkills.includes(k))
+        )
+        .map(([otherCat]) => otherCat);
+
+      if (relatedCategories.length) {
+        recs.push(
+          `Also, consider exploring related areas like: ${relatedCategories.join(
+            ", "
+          )} to broaden your skill set.`
         );
       }
     }
   }
 
-  // Generic growth recommendations
+  // Generic fallback
   if (!recs.length) {
     recs.push(
-      "Explore foundational skills in web development (HTML, CSS, JavaScript) or Python for AI/ML."
+      "You haven't listed skills matching our categories yet. Start with foundational skills: HTML, CSS, JavaScript, or Python for AI/ML."
     );
   }
 
+  // Soft skills & learning resources
   recs.push(
     "Focus on soft skills: communication, teamwork, and problem-solving.",
-    "Consider online courses and certifications to strengthen your profile."
+    "Check out free resources on platforms like FreeCodeCamp, MDN Web Docs, and Coursera to strengthen your profile."
   );
 
   return recs;
